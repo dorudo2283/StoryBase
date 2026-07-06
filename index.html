@@ -3,135 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web Code Editor - Updated</title>
+    <title>Web Code Editor - Real File Sync</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.39.0/min/vs/loader.min.js"></script>
     <style>
         body, html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            background-color: #1e1e1e;
-            color: #ffffff;
-            font-family: 'Courier New', Courier, monospace;
-            overflow: hidden;
+            margin: 0; padding: 0; height: 100%;
+            background-color: #1e1e1e; color: #ffffff;
+            font-family: 'Courier New', Courier, monospace; overflow: hidden;
         }
-
-        .app-container {
-            display: flex;
-            height: 100vh;
-            flex-direction: column;
-        }
-
-        /* ヘッダー領域 */
+        .app-container { display: flex; height: 100vh; flex-direction: column; }
         .header {
-            height: 40px;
-            background-color: #111;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 20px;
-            border-bottom: 1px solid #2d2d2d;
-            font-size: 14px;
+            height: 40px; background-color: #111;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 20px; border-bottom: 1px solid #2d2d2d; font-size: 14px;
         }
-
         .logo { font-weight: bold; font-size: 16px; }
-        .save-status { color: #e5c07b; transition: color 0.2s; }
+        .save-status { color: #e5c07b; }
         .breadcrumbs { color: #888; }
         .breadcrumbs span { color: #fff; font-weight: bold; }
 
-        /* メインコンテンツ */
-        .main-content {
-            display: flex;
-            flex: 1;
-        }
-
-        /* 左側：サイドバー */
-        .sidebar {
-            width: 240px;
-            background-color: #333333;
-            display: flex;
-            border-right: 1px solid #2d2d2d;
-        }
-
+        .main-content { display: flex; flex: 1; }
+        .sidebar { width: 240px; background-color: #333333; display: flex; border-right: 1px solid #2d2d2d; }
         .sidebar-actions {
-            width: 60px;
-            background-color: #252526;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding-top: 15px;
+            width: 60px; background-color: #252526;
+            display: flex; flex-direction: column; align-items: center; padding-top: 15px;
         }
-
-        .action-btn {
-            position: relative;
-            text-align: center;
-            font-size: 12px;
-            color: #ccc;
-        }
-
-        /* 未保存数の赤いバッジ */
+        .action-btn { position: relative; text-align: center; font-size: 12px; color: #ccc; }
         .badge {
-            position: absolute;
-            top: -5px;
-            right: -10px;
-            background-color: #e06c75;
-            color: white;
-            border-radius: 10px;
-            padding: 2px 6px;
-            font-size: 11px;
-            font-weight: bold;
-            display: none; /* 初期状態は非表示 */
-            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            position: absolute; top: -5px; right: -10px;
+            background-color: #e06c75; color: white; border-radius: 10px;
+            padding: 2px 6px; font-size: 11px; font-weight: bold; display: none;
         }
-
-        /* ファイルツリー領域 */
-        .file-tree {
-            flex: 1;
-            padding: 15px 10px;
-            font-size: 13px;
-            overflow-y: auto;
+        .file-tree { flex: 1; padding: 15px 10px; font-size: 13px; overflow-y: auto; }
+        
+        /* フォルダを開くスタイリッシュなボタン */
+        .open-btn {
+            width: 100%; background-color: #4c6ef5; color: white;
+            border: none; padding: 8px 12px; border-radius: 4px;
+            cursor: pointer; font-weight: bold; margin-bottom: 15px;
+            font-size: 12px; text-align: center;
         }
+        .open-btn:hover { background-color: #3b5bdb; }
 
-        .tree-title {
-            color: #888;
-            margin-bottom: 12px;
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .file-item {
-            padding: 6px 8px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            border-radius: 3px;
-            margin-bottom: 2px;
-            color: #ccc;
-        }
-
+        .file-item { padding: 6px 8px; cursor: pointer; display: flex; align-items: center; border-radius: 3px; margin-bottom: 2px; color: #ccc; }
         .file-item:hover { background-color: #444; color: #fff; }
         .file-item.active { background-color: #2a2d2e; color: #61afef; }
         .file-item.js-file { color: #e5c07b; }
-        .file-item.unsaved::after {
-            content: "●";
-            color: #e5c07b;
-            font-size: 9px;
-            margin-left: auto;
-            padding-right: 5px;
-        }
-
-        /* 右側：エディタ領域 */
-        .editor-container {
-            flex: 1;
-            position: relative;
-            background-color: #1e1e1e;
-        }
-
-        #monaco-root {
-            width: 100%;
-            height: 100%;
-        }
+        .file-item.unsaved::after { content: "●"; color: #e5c07b; font-size: 9px; margin-left: auto; padding-right: 5px; }
+        .editor-container { flex: 1; position: relative; background-color: #1e1e1e; }
+        #monaco-root { width: 100%; height: 100%; }
     </style>
 </head>
 <body>
@@ -140,11 +60,11 @@
         <div class="header">
             <div class="logo">ロゴ</div>
             <div class="save-status" id="saveStatus">Saved</div>
-            <div class="breadcrumbs" id="breadcrumbs">index.html</div>
+            <div class="breadcrumbs" id="breadcrumbs">ファイルを読み込んでください</div>
         </div>
 
         <div class="main-content">
-            <div class="sidebar" id="sidebar">
+            <div class="sidebar">
                 <div class="sidebar-actions">
                     <div class="action-btn">
                         <span style="font-size: 28px;">📄</span>
@@ -154,9 +74,8 @@
                 </div>
                 
                 <div class="file-tree">
-                    <div class="tree-title">エクスプローラー (ドロップ領域)</div>
-                    <div id="fileList">
-                        </div>
+                    <button class="open-btn" onclick="openLocalFolder()">📁 フォルダを開く</button>
+                    <div id="fileList"></div>
                 </div>
             </div>
 
@@ -167,65 +86,92 @@
     </div>
 
     <script>
-        // 仮想ファイルシステム（ファイルの「相対パス」をキーにして管理）
-        let filesStorage = {
-            "index.html": {
-                name: "index.html",
-                path: "index.html", // 最上位
-                content: "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <title>Document</title>\n</head>\n<body>\n    \n</body>\n</html>",
-                language: "html",
-                isSaved: true
-            }
-        };
-        let currentFileKey = "index.html";
+        // 仮想ファイルシステム（本物のファイルへアクセスするための「ハンドル」も一緒に保管する）
+        let filesStorage = {};
+        let currentFileKey = "";
         let editorInstance = null;
 
-        // Monaco Editor 初期化
         require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.39.0/min/vs' }});
         require(['vs/editor/editor.main'], function() {
             editorInstance = monaco.editor.create(document.getElementById('monaco-root'), {
-                value: filesStorage[currentFileKey].content,
-                language: 'html',
+                value: "// 「フォルダを開く」ボタンから、パソコンの作業フォルダを選択してください。",
+                language: 'javascript',
                 theme: 'vs-dark',
                 fontSize: 15,
                 automaticLayout: true
             });
 
-            // 初期ファイルリストの描画とバッジ更新
-            renderFileList();
-            updateGlobalStatus();
-
-            // エディタ内の文字変更を検知
             editorInstance.onDidChangeModelContent(() => {
-                if (filesStorage[currentFileKey]) {
-                    // 変更があった場合、メモリ上のデータを更新し、未保存フラグを立てる
+                if (currentFileKey && filesStorage[currentFileKey]) {
                     filesStorage[currentFileKey].content = editorInstance.getValue();
-                    
                     if (filesStorage[currentFileKey].isSaved) {
                         filesStorage[currentFileKey].isSaved = false;
-                        
-                        // 個別のファイルアイテムに未保存マークをつける
                         const item = document.getElementById(`file-${btoa(currentFileKey)}`);
                         if (item) item.classList.add('unsaved');
-                        
                         updateGlobalStatus();
                     }
                 }
             });
         });
 
-        // 全体の保存状態と「未保存数バッジ」を更新するロジック
-        function updateGlobalStatus() {
-            let unsavedCount = 0;
-            
-            // すべてのファイルを走査して、未保存の数を数える
-            for (let key in filesStorage) {
-                if (!filesStorage[key].isSaved) {
-                    unsavedCount++;
+        // パソコン内の本物のフォルダを選択させる関数
+        async function openLocalFolder() {
+            try {
+                // ブラウザにフォルダ選択ダイアログを表示させる（File System Access API）
+                const folderHandle = await window.showDirectoryPicker();
+                filesStorage = {}; // 初期化
+                
+                // フォルダ内のファイルを再帰的にスキャン
+                await readDirectory(folderHandle, folderHandle.name);
+                
+                // 最初のファイルを開く
+                const firstKey = Object.keys(filesStorage)[0];
+                if (firstKey) {
+                    switchFile(firstKey);
+                }
+            } catch (err) {
+                console.error("フォルダの変更権限が拒否されたか、キャンセルされました:", err);
+            }
+        }
+
+        // フォルダ内部を走査してファイルをメモリに格納する
+        async function readDirectory(dirHandle, currentPath) {
+            for await (const entry of dirHandle.values()) {
+                if (entry.kind === 'file') {
+                    const file = await entry.getFile();
+                    const text = await file.text();
+                    const ext = entry.name.split('.').pop();
+                    
+                    let lang = 'javascript';
+                    if (ext === 'html' || ext === 'htm') lang = 'html';
+                    if (ext === 'css') lang = 'css';
+                    if (ext === 'json') lang = 'json';
+
+                    const fullPath = `${currentPath}/${entry.name}`;
+
+                    // ファイルデータと一緒に「本物のファイルオブジェクト(handle)」を記憶させておく
+                    filesStorage[fullPath] = {
+                        name: entry.name,
+                        path: fullPath,
+                        content: text,
+                        language: lang,
+                        isSaved: true,
+                        fileHandle: entry // ★これが上書き保存の「鍵」になります
+                    };
+                } else if (entry.kind === 'directory') {
+                    // サブフォルダがあればさらに深く入る
+                    await readDirectory(entry, `${currentPath}/${entry.name}`);
                 }
             }
+            renderFileList();
+            updateGlobalStatus();
+        }
 
-            // 1のところ（未保存数バッジ）の更新
+        function updateGlobalStatus() {
+            let unsavedCount = 0;
+            for (let key in filesStorage) {
+                if (!filesStorage[key].isSaved) unsavedCount++;
+            }
             const badge = document.getElementById('unsavedCountBadge');
             if (unsavedCount > 0) {
                 badge.innerText = unsavedCount;
@@ -233,153 +179,79 @@
             } else {
                 badge.style.display = "none";
             }
-
-            // 現在開いているファイルのステータス表示
             const statusText = document.getElementById('saveStatus');
-            if (filesStorage[currentFileKey] && !filesStorage[currentFileKey].isSaved) {
+            if (currentFileKey && filesStorage[currentFileKey] && !filesStorage[currentFileKey].isSaved) {
                 statusText.innerText = "Not Saved...";
-                statusText.style.color = "#e5c07b"; // オレンジ
+                statusText.style.color = "#e5c07b";
             } else {
                 statusText.innerText = "Saved";
-                statusText.style.color = "#98c379"; // 緑
+                statusText.style.color = "#98c379";
             }
         }
 
-        // パンくずリストをファイルの「位置（パス）」に基づいて生成
         function updateBreadcrumbs(filePath) {
             const breadcrumbsContainer = document.getElementById('breadcrumbs');
-            const parts = filePath.split('/'); // パスをバラバラにする (例: ["WEBSITE", "system", "a.js"])
-
-            if (parts.length === 1) {
-                // 最上位階層ならファイル名のみを表示
-                breadcrumbsContainer.innerHTML = `<span>${parts[0]}</span>`;
-            } else {
-                // 階層がある場合は、矢印(>)で繋ぐ。最後の要素（ファイル名）だけspanで囲んで強調
-                const fileName = parts.pop();
-                const folderPath = parts.join(' > ');
-                breadcrumbsContainer.innerHTML = `${folderPath} > <span>${fileName}</span>`;
-            }
+            const parts = filePath.split('/');
+            const fileName = parts.pop();
+            const folderPath = parts.join(' > ');
+            breadcrumbsContainer.innerHTML = `${folderPath} > <span>${fileName}</span>`;
         }
 
-        // ファイルリストの再描画
         function renderFileList() {
             const fileList = document.getElementById('fileList');
             fileList.innerHTML = '';
-
             for (let key in filesStorage) {
                 const file = filesStorage[key];
                 const item = document.createElement('div');
-                
-                // 特殊文字対策として、ID名にはBase64エンコードを施す
                 item.id = `file-${btoa(key)}`;
                 item.className = `file-item ${file.language === 'javascript' ? 'js-file' : ''}`;
                 if (key === currentFileKey) item.classList.add('active');
                 if (!file.isSaved) item.classList.add('unsaved');
-
                 const icon = file.language === 'javascript' ? 'JS' : '<>';
-                // 画面表示はフルパスではなく、純粋なファイル名のみを出す
                 item.innerText = `${icon} ${file.name}`;
-                
                 item.onclick = () => switchFile(key);
                 fileList.appendChild(item);
             }
         }
 
-        // ファイル切り替え
         function switchFile(key) {
             currentFileKey = key;
             const fileData = filesStorage[key];
-
-            renderFileList(); // リストの状態（activeクラスなど）を更新
-
+            renderFileList();
             if (editorInstance) {
                 editorInstance.setValue(fileData.content);
                 monaco.editor.setModelLanguage(editorInstance.getModel(), fileData.language);
             }
-
             updateBreadcrumbs(fileData.path);
             updateGlobalStatus();
         }
 
-        // --- ドラッグ＆ドロップ (フォルダ構造の解析に対応) ---
-        const sidebar = document.getElementById('sidebar');
-
-        sidebar.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            sidebar.style.backgroundColor = "#444";
-        });
-
-        sidebar.addEventListener('dragleave', () => {
-            sidebar.style.backgroundColor = "#333";
-        });
-
-        sidebar.addEventListener('drop', async (e) => {
-            e.preventDefault();
-            sidebar.style.backgroundColor = "#333";
-
-            // DataTransferItem を使って、ドロップされたアイテム（フォルダ対応）を走査
-            const items = e.dataTransfer.items;
-            if (items) {
-                for (let i = 0; i < items.length; i++) {
-                    const item = items[i].webkitGetAsEntry();
-                    if (item) {
-                        await traverseFileTree(item, "");
-                    }
-                }
-            }
-        });
-
-        // フォルダだった場合に内部を再帰的に探る関数（認知科学：複雑性の自動分解）
-        async function traverseFileTree(item, path) {
-            if (item.isFile) {
-                // ファイルの場合
-                const file = await new Promise((resolve) => item.file(resolve));
-                const text = await file.text();
-                const ext = file.name.split('.').pop();
-                let lang = 'javascript';
-                if (ext === 'html' || ext === 'htm') lang = 'html';
-                if (ext === 'css') lang = 'css';
-                if (ext === 'json') lang = 'json';
-
-                // ドロップ時の相対パスを確定させる
-                const fullPath = path ? `${path}/${file.name}` : file.name;
-
-                filesStorage[fullPath] = {
-                    name: file.name,
-                    path: fullPath,
-                    content: text,
-                    language: lang,
-                    isSaved: true
-                };
-
-                switchFile(fullPath); // ドロップしたファイルを自動的に開く
-
-            } else if (item.isDirectory) {
-                // フォルダの場合、その中身をさらにスキャンする
-                const dirReader = item.createReader();
-                const entries = await new Promise((resolve) => dirReader.readEntries(resolve));
-                const newPath = path ? `${path}/${item.name}` : item.name;
-                
-                for (let entry of entries) {
-                    await traverseFileTree(entry, newPath);
-                }
-            }
-        }
-
-        // --- 保存処理 (Ctrl + S / Cmd + S) ---
-        window.addEventListener('keydown', function(e) {
+        // --- ★本物のファイルへ上書き保存する処理 (Ctrl + S) ---
+        window.addEventListener('keydown', async function(e) {
             if ((e.ctrlKey || e.metaKey) && e.key === 's') {
                 e.preventDefault();
                 
-                if (filesStorage[currentFileKey]) {
-                    filesStorage[currentFileKey].isSaved = true;
-                    
-                    // 個別リストの未保存マークを外す
-                    const item = document.getElementById(`file-${btoa(currentFileKey)}`);
-                    if (item) item.classList.remove('unsaved');
-                    
-                    updateGlobalStatus();
-                    console.log(`【保存完了】 パス: ${filesStorage[currentFileKey].path}`);
+                const activeFile = filesStorage[currentFileKey];
+                if (activeFile && activeFile.fileHandle) {
+                    try {
+                        // パソコン内の本物のファイルに書き込みストリームを開く
+                        const writable = await activeFile.fileHandle.createWritable();
+                        // エディタの現在の文字を書き込む
+                        await writable.write(editorInstance.getValue());
+                        // ファイルを閉じて保存を確定
+                        await writable.close();
+
+                        // 内部ステータスを「保存済み」に変更
+                        activeFile.isSaved = true;
+                        const item = document.getElementById(`file-${btoa(currentFileKey)}`);
+                        if (item) item.classList.remove('unsaved');
+                        
+                        updateGlobalStatus();
+                        console.log(`【PCのローカルファイルに完全上書き成功】: ${activeFile.path}`);
+                    } catch (err) {
+                        alert("ファイルの保存権限がありません、またはブラウザが対応していません。");
+                        console.error(err);
+                    }
                 }
             }
         });
