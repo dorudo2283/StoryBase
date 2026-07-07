@@ -13,7 +13,7 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* ヘッダー：微細なシャドウでプロ感を演出 */
+        /* ヘッダー */
         header {
             background-color: #ff8e8e;
             padding: 16px 24px;
@@ -27,7 +27,7 @@
         .logo { font-size: 24px; font-weight: 800; color: #0d2c54; cursor: pointer; user-select: none; letter-spacing: -0.02em; }
         .logo span { color: #2a7b4c; }
         
-        /* 検索窓（枠線をスマートに） */
+        /* 検索窓 */
         .search-area { display: flex; gap: 8px; align-items: center; }
         .search-input-wrapper { position: relative; display: inline-block; }
         .search-input-wrapper input {
@@ -56,12 +56,9 @@
             border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: bold; color: #444;
             transition: all 0.2s;
         }
-        .search-area button:hover {
-            background-color: #f0f0f0;
-            border-color: #999;
-        }
+        .search-area button:hover { background-color: #f0f0f0; border-color: #999; }
 
-        /* お知らせバー：角に丸みを持たせて質感を向上 */
+        /* お知らせバー */
         .news-bar {
             background-color: #ffe4e4; padding: 10px; text-align: center;
             font-size: 14px; color: #d63031; font-weight: 600;
@@ -88,13 +85,9 @@
         .banner-sub { background-color: #f7d6c8; padding: 8px 16px; font-weight: bold; color: #b84116; border-radius: 4px; display: inline-block; }
 
         /* 全体コンテナ */
-        .page-section {
-            max-width: 1200px;
-            margin: 0 auto 60px auto;
-            padding: 0 20px;
-        }
+        .page-section { max-width: 1200px; margin: 0 auto 60px auto; padding: 0 20px; }
 
-        /* 【ホーム用】2カラムレイアウト（安っぽい枠線を廃止し高級感のある影へ） */
+        /* 【ホーム用】2カラムレイアウト */
         .default-layout {
             display: flex; background-color: #fff; border-radius: 8px; overflow: hidden;
             box-shadow: 0 4px 16px rgba(0,0,0,0.06);
@@ -122,17 +115,13 @@
         .novel-title-link:hover { color: #004499; text-decoration: underline; }
         .rank-badge { color: #ffaa00; font-weight: 700; margin-right: 10px; font-size: 18px; width: 40px; display: inline-block; }
 
-        /* 【検索結果】スタイル向上 */
-        .search-result-title-text {
-            text-align: center; font-size: 20px; font-weight: 700; color: #4a5568; margin: 40px 0 24px 0;
-        }
+        /* 【検索結果】 */
+        .search-result-title-text { text-align: center; font-size: 20px; font-weight: 700; color: #4a5568; margin: 40px 0 24px 0; }
         .search-result-box {
-            border: 1px solid #e2e8f0; background-color: #fff;
-            border-radius: 8px;
+            border: 1px solid #e2e8f0; background-color: #fff; border-radius: 8px;
             display: flex; align-items: center; justify-content: space-between;
             padding: 24px 30px; width: 100%; max-width: 900px; margin: 0 auto 16px auto;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
-            transition: transform 0.2s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03); transition: transform 0.2s;
         }
         .search-result-box:hover { transform: translateY(-2px); }
         .result-main { display: flex; align-items: baseline; gap: 40px; }
@@ -147,17 +136,13 @@
             user-select: none; transition: all 0.2s; text-align: center; font-weight: 600;
         }
         .status-badge:hover { background-color: #f7fafc; border-color: #a0aec0; }
-        .status-badge.is-fav {
-            background-color: #e6f4ea; color: #137333; border-color: #a3dab8; font-weight: bold;
-        }
+        .status-badge.is-fav { background-color: #e6f4ea; color: #137333; border-color: #a3dab8; font-weight: bold; }
         .status-badge.is-fav:hover { background-color: #d2edd9; }
 
-        /* 【新機能】本文閲覧：章わけ2カラムレイアウト */
-        .viewer-layout {
-            display: flex; gap: 30px; max-width: 1100px; margin: 40px auto; align-items: flex-start;
-        }
+        /* 本文閲覧：章わけ2カラムレイアウト */
+        .viewer-layout { display: flex; gap: 30px; max-width: 1100px; margin: 40px auto; align-items: flex-start; }
         
-        /* 左側：固定配置の章ナビゲーション（目次） */
+        /* 左サイドバー（目次） */
         .viewer-sidebar {
             width: 260px; background-color: #fff; padding: 24px; border-radius: 8px;
             border: 1px solid #e2e8f0; box-shadow: 0 4px 12px rgba(0,0,0,0.03);
@@ -170,12 +155,11 @@
         .chapter-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
         .chapter-item {
             font-size: 14px; color: #4a5568; cursor: pointer; padding: 8px 12px;
-            border-radius: 4px; transition: all 0.2s; line-height: 1.4;
-            font-weight: 600;
+            border-radius: 4px; transition: all 0.2s; line-height: 1.4; font-weight: 600;
         }
         .chapter-item:hover { background-color: #fff1f1; color: #ff8e8e; }
 
-        /* 右側：本文メインコンテナ */
+        /* 右コンテンツ */
         .viewer-main-content {
             flex: 1; background-color: #fff; padding: 50px 60px;
             border-radius: 8px; border: 1px solid #e2e8f0; box-shadow: 0 4px 16px rgba(0,0,0,0.04);
@@ -193,19 +177,18 @@
         .viewer-center-title { font-size: 28px; font-weight: 800; text-align: center; flex: 1; padding: 0 20px; color: #1a202c; }
         .viewer-right-meta { text-align: right; font-size: 13px; color: #718096; line-height: 1.6; }
         
-        /* 本文デザイン調整（章タイトル表示も美しく） */
         .viewer-body-text {
             font-family: 'Shippori Mincho', 'YuMincho', '游明朝', 'MS Mincho', Georgia, serif;
-            font-size: 20px; line-height: 2.4; letter-spacing: 0.05em;
-            white-space: pre-wrap; word-wrap: break-word; color: #1a1a1a;
+            font-size: 20px; line-height: 2.4; letter-spacing: 0.05em; color: #1a1a1a;
         }
-        /* 本文内の「章」の見出しスタイリング */
+        .viewer-chapter-wrapper { margin-bottom: 50px; }
         .viewer-chapter-heading {
             font-family: -apple-system, BlinkMacSystemFont, sans-serif;
             font-size: 22px; font-weight: 700; color: #0d2c54;
-            margin: 40px 0 20px 0; padding-bottom: 8px; border-bottom: 1px solid #e2e8f0;
+            margin: 0 0 20px 0; padding-bottom: 8px; border-bottom: 1px solid #e2e8f0;
+            scroll-margin-top: 40px; /* スクロール時の余白確保 */
         }
-        .viewer-chapter-heading:first-child { margin-top: 0; }
+        .viewer-chapter-content { white-space: pre-wrap; word-wrap: break-word; margin-bottom: 30px; }
     </style>
 </head>
 <body>
@@ -236,7 +219,6 @@
         <div class="arrow" onclick="moveCarousel(1)">→</div>
     </div>
 
-    <!-- ホーム画面 -->
     <div id="section-default" class="page-section">
         <div class="default-layout">
             <div class="column">
@@ -250,25 +232,19 @@
         </div>
     </div>
 
-    <!-- 検索結果画面 -->
     <div id="section-search-result" class="page-section" style="display: none;">
         <div class="search-result-title-text" id="search-result-title-text"></div>
         <div id="search-results-container"></div>
     </div>
 
-    <!-- 本文閲覧画面：章選択ナビゲーション付きのレイアウトへ刷新 -->
     <div id="section-viewer" class="page-section" style="display: none;">
         <div class="viewer-layout">
             
-            <!-- 左サイドバー（章ナビゲーション） -->
             <div class="viewer-sidebar">
                 <div class="sidebar-title">目次 / 章選択</div>
-                <ul class="chapter-list" id="v-sidebar-chapters">
-                    <!-- JSで動的に章リストを生成 -->
-                </ul>
+                <ul class="chapter-list" id="v-sidebar-chapters"></ul>
             </div>
 
-            <!-- 右メインコンテンツ -->
             <div class="viewer-main-content">
                 <div class="viewer-header">
                     <div class="viewer-left">
@@ -281,36 +257,53 @@
                         <div id="v-author">作者：タロウ</div>
                     </div>
                 </div>
-                <!-- 本文エリア -->
-                <div class="viewer-body-text" id="v-content">
-                    本文がここに表示されます。
-                </div>
+                <div class="viewer-body-text" id="v-content"></div>
             </div>
 
         </div>
     </div>
 
     <script>
-        // バックアップ用ダミーデータ（章わけの検証用に「#」を用いた記法にしてあります）
+        // バックアップ用ダミーデータ（実際のShosetsu.jsと同じ構造に完全同期）
         const fallbackData = [
-            { 
-                id: 1, 
-                title: "絶望の彼方で待つ光", 
-                author: "タロウ", 
-                date: "2026-07-07", 
-                content: "# 第一章 終わりの始まり\n\n世界がその光を失ってから、どれほどの月日が流れただろうか。\n足元に広がる荒野は冷たく、乾いた風だけが耳を通り抜けていく。\n\n# 第二章 小さな出会い\n\nそんな枯れ果てた地で、僕は一人の少女と出会った。\n彼女の瞳は、失われたはずの群青色を宿していた。" 
+            {
+                id: 1,
+                title: "絶望の翳し",
+                author: "タロウ",
+                genre: "ダークファンタジー",
+                description: "ある日、いつもの通りを歩いていたら急に人がぶつかってきて人生が入れ替わり！？",
+                chapters: [
+                    { title: "第一章：見知らぬ天井", content: "「おい、危ない！」それが、俺が元の身体で聞いた最後の言葉だった……。見知らぬ天井、見知らぬ手。鏡に映ったのは、街を牛耳る組織のボスの顔だったのだ。ここから俺の、絶望の第2の人生が始まる――。" },
+                    { title: "第二章：組織の洗礼", content: "目が覚めて三日。俺はボスとしての振る舞いを叩き込まれていた。机の上に積まれた書類、部下たちの冷徹な視線。間違えれば即、命はない。" }
+                ],
+                date: "2026-07-07"
             },
-            { 
-                id: 2, 
-                title: "群青色のサイダー", 
-                author: "アオイ", 
-                date: "2026-07-06", 
-                content: "# 第一章 夏の兆し\n\n夏の匂いがした。\nすれ違う電車の窓から差し込む陽射しは痛いくらいに眩しい。\n\n# 第二章 炭酸の泡\n\n手元のサイダーが、パチパチと音を立てて弾ける。\nまるで、私の胸の鼓動のようだった。" 
+            {
+                id: 2,
+                title: "魔法の魔女",
+                author: "ミサキ",
+                genre: "日常・ファンタジー",
+                description: "不思議な力を持つ魔女の物語。",
+                chapters: [
+                    { title: "プロローグ：小さな魔法", content: "むかしむかし、あるところに小さな魔法を操る可愛い魔女がいました。彼女の魔法は、枯れた花をほんの少しだけ元気にするという、ささやかなもの。しかし、その優しさが街の人々の心を救っていくのです。" },
+                    { title: "エピソード1：枯れ木に咲く花", content: "ある日、魔女は一本の大きな枯れ木を見つけました。街の人々が諦めていたその木に、彼女がそっと手をかざすと、小さな緑の芽が吹き出しました。" }
+                ],
+                date: "2026-07-06"
             }
         ];
         const novelData = (typeof window.novelData !== 'undefined') ? window.novelData : fallbackData;
 
-        let favoriteIds = []; 
+        // 【LocalStorage対応】起動時にブラウザの保存領域からお気に入りデータを復元
+        let favoriteIds = [];
+        try {
+            const savedFavs = localStorage.getItem('story_base_favorites');
+            if (savedFavs) {
+                favoriteIds = JSON.parse(savedFavs);
+            }
+        } catch (e) {
+            console.error("LocalStorageの読み込みに失敗しました:", e);
+        }
+
         let currentViewingId = null; 
         let currentScreen = 'home'; 
         let previousScreen = 'home'; 
@@ -345,14 +338,18 @@
             });
         });
 
+        // 状態変更時のUI更新 ＆ LocalStorageへの書き込み一元化
         function updateAllLists() {
             renderHomeRecentList();
             renderRightFavoriteList();
-            if (currentScreen === 'search') {
-                renderSearchResults();
-            }
-            if (currentScreen === 'viewer') {
-                updateViewerFavBadge();
+            if (currentScreen === 'search') renderSearchResults();
+            if (currentScreen === 'viewer') updateViewerFavBadge();
+
+            // お気に入り状態をブラウザに永続保存
+            try {
+                localStorage.setItem('story_base_favorites', JSON.stringify(favoriteIds));
+            } catch (e) {
+                console.error("LocalStorageへの保存に失敗しました:", e);
             }
         }
 
@@ -373,7 +370,6 @@
             document.getElementById('section-default').style.display = 'block';
             document.getElementById('section-search-result').style.display = 'none';
             document.getElementById('section-viewer').style.display = 'none';
-            
             currentViewingId = null;
             updateAllLists();
         }
@@ -449,11 +445,7 @@
         let globalFilteredList = []; 
         function executeSearch() {
             const keyword = document.getElementById('search-input').value.trim().toLowerCase();
-
-            if (keyword === "") {
-                showDefaultPage();
-                return;
-            }
+            if (keyword === "") { showDefaultPage(); return; }
 
             previousScreen = 'home'; 
             currentScreen = 'search';
@@ -470,15 +462,10 @@
                 const authorLower = novel.author.toLowerCase();
                 let score = 0;
 
-                if (titleLower === keyword || authorLower === keyword) {
-                    score = 100;
-                } else if (titleLower.includes(keyword) || authorLower.includes(keyword)) {
-                    score = 10;
-                }
+                if (titleLower === keyword || authorLower === keyword) { score = 100; } 
+                else if (titleLower.includes(keyword) || authorLower.includes(keyword)) { score = 10; }
 
-                if (score > 0) {
-                    globalFilteredList.push({ ...novel, _score: score });
-                }
+                if (score > 0) { globalFilteredList.push({ ...novel, _score: score }); }
             });
 
             globalFilteredList.sort((a, b) => b._score - a._score);
@@ -487,7 +474,6 @@
 
         function renderSearchResults() {
             document.getElementById('search-result-title-text').innerText = `「 ${document.getElementById('search-input').value} 」の結果（${globalFilteredList.length}件）`;
-
             const resultsContainer = document.getElementById('search-results-container');
             resultsContainer.innerHTML = '';
 
@@ -520,7 +506,7 @@
             });
         }
 
-        // 本文ビューア：章の動的解析＆サイドバー連動
+        // 【大幅改修】chapters配列データ構造に完全対応した閲覧制御
         function openViewer(id) {
             const novel = novelData.find(n => n.id === id);
             if (!novel) return;
@@ -541,40 +527,36 @@
             const dateObj = new Date(novel.date);
             document.getElementById('v-date').innerText = `${dateObj.getFullYear()}年${dateObj.getMonth() + 1}月${dateObj.getDate()}日`;
 
-            // 【章わけ解析エンジン】本文を「#」で分割してHTML要素と目次を同時生成
             const contentArea = document.getElementById('v-content');
             const sidebarContainer = document.getElementById('v-sidebar-chapters');
             
             contentArea.innerHTML = '';
             sidebarContainer.innerHTML = '';
 
-            const lines = novel.content.split('\n');
-            let chapterCount = 0;
+            // chapters配列が正しく存在する場合のループ処理
+            if (novel.chapters && novel.chapters.length > 0) {
+                novel.chapters.forEach((ch, index) => {
+                    const headingId = `chapter-idx-${index}`;
 
-            lines.forEach(line => {
-                if (line.startsWith('# ')) {
-                    chapterCount++;
-                    const chapterTitle = line.replace('# ', '').trim();
-                    const headingId = `chapter-heading-${chapterCount}`;
-
-                    // 本文に見出し要素を追加
-                    contentArea.insertAdjacentHTML('beforeend', `<div class="viewer-chapter-heading" id="${headingId}">${chapterTitle}</div>`);
+                    // 本文（右側）に章ごとのラッパーを生成して挿入
+                    const chapterHtml = `
+                        <div class="viewer-chapter-wrapper">
+                            <div class="viewer-chapter-heading" id="${headingId}">${ch.title}</div>
+                            <div class="viewer-chapter-content">${ch.content}</div>
+                        </div>
+                    `;
+                    contentArea.insertAdjacentHTML('beforeend', chapterHtml);
                     
-                    // 左サイドバーに目次を追加（クリックで該当位置へスムーズスクロール）
+                    // 目次（左側サイドバー）にリンクとなる章タイトルを挿入
                     sidebarContainer.insertAdjacentHTML('beforeend', `
                         <li class="chapter-item" onclick="scrollToChapter('${headingId}')">
-                            ${chapterTitle}
+                            ${ch.title}
                         </li>
                     `);
-                } else {
-                    // 通常テキストの追加
-                    contentArea.appendChild(document.createTextNode(line + '\n'));
-                }
-            });
-
-            // 万が一本文に「#」の章区切りが1つも無かった場合のフォールバック
-            if (chapterCount === 0) {
-                contentArea.innerText = novel.content;
+                });
+            } else {
+                // chaptersが無い、または古いデータ形式だった場合のフォールバック
+                contentArea.innerText = novel.content || "本文が登録されていません。";
                 sidebarContainer.innerHTML = '<li class="chapter-item" style="color:#aaa; cursor:default;">章が設定されていません</li>';
             }
 
@@ -582,7 +564,6 @@
             window.scrollTo({ top: 0 });
         }
 
-        // 章ジャンプ用関数
         function scrollToChapter(id) {
             const element = document.getElementById(id);
             if (element) {
