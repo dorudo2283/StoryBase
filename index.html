@@ -52,15 +52,15 @@
             font-size: 14px; border-bottom: 1px solid #ffcdcd;
         }
 
-        /* カルーセル（広告バー：矢印で左右が動く仕様） */
+        /* カルーセル（広告バー：デザインを崩さず動くように調整） */
         .carousel-container {
             display: flex; align-items: center; justify-content: center;
             margin: 25px auto; max-width: 1000px; gap: 20px; padding: 0 20px;
         }
         .arrow { font-size: 30px; cursor: pointer; user-select: none; padding: 10px; }
         .side-box { 
-            width: 120px; height: 120px; border: 1px solid #ccc; background-color: #fff; opacity: 0.4; 
-            display: flex; align-items: center; justify-content: center; font-size: 12px; color: #666; text-align: center; padding: 5px;
+            width: 80px; height: 120px; border: 1px solid #ccc; background-color: #fff; opacity: 0.4; 
+            display: flex; align-items: center; justify-content: center; font-size: 11px; color: #666; text-align: center; padding: 5px;
         }
         .main-banner {
             flex: 1; border: 2px solid #333; background-color: #fff; text-align: center; padding: 25px 20px;
@@ -109,7 +109,7 @@
             display: flex; align-items: center; justify-content: space-between;
             padding: 15px 25px; width: 100%; max-width: 900px; margin: 0 auto 15px auto;
         }
-        .result-main { display: flex; align-items: center; gap: 40px; }
+        .result-main { display: flex; align-items: baseline; gap: 40px; }
         .result-title { font-size: 22px; font-weight: bold; color: #0066cc; cursor: pointer; text-decoration: underline; }
         .result-meta { font-size: 14px; color: #333; line-height: 1.5; }
         .result-fav-status { font-size: 14px; color: #333; text-align: right; font-weight: bold; }
@@ -167,7 +167,6 @@
         お知らせ：タロウが作った小説WEBサイト、Story Baseを開設しました！オリジナルの小説作品を応募しています！
     </div>
 
-    <!-- カルーセル：データ連動型に最適化。左右の箱も連動して切り替わります -->
     <div class="carousel-container" id="carousel-area">
         <div class="arrow" onclick="moveCarousel(-1)">←</div>
         <div class="side-box" id="carousel-left-box"></div>
@@ -179,7 +178,6 @@
         <div class="arrow" onclick="moveCarousel(1)">→</div>
     </div>
 
-    <!-- ホーム画面レイアウト -->
     <div id="section-default" class="page-section">
         <div class="default-layout">
             <div class="column">
@@ -193,13 +191,11 @@
         </div>
     </div>
 
-    <!-- 検索結果画面 -->
     <div id="section-search-result" class="page-section" style="display: none;">
         <div class="search-result-title-text" id="search-result-title-text"></div>
         <div id="search-results-container"></div>
     </div>
 
-    <!-- 本文閲覧画面 -->
     <div id="section-viewer" class="page-section" style="display: none;">
         <div class="viewer-container">
             <div class="viewer-header">
@@ -219,10 +215,9 @@
         </div>
     </div>
 
-    <!-- 外部ファイル Shosetsu.js の読み込み（なければ下のダミーが動きます） -->
     <script src="Shosetsu.js"></script>
     <script>
-        // 万が一Shosetsu.jsが読み込めなかった時用の暫定データ
+        // バックアップ用ダミーデータ（外部ファイルがない場合でも動作を担保）
         const fallbackData = [
             { id: 1, title: "絶望の彼方で待つ光", author: "タロウ", date: "2026-07-07", content: "第一章 終わりの始まり\n\n世界がその光を失ってから、どれほどの月日が流れただろうか。\n足元に広がる荒野は冷たく、乾いた風だけが耳を通り抜けていく。" },
             { id: 2, title: "群青色のサイダー", author: "アオイ", date: "2026-07-06", content: "夏の匂いがした。\nすれ違う電車の窓から差し込む陽射しは痛いくらいに眩しい。" }
@@ -232,20 +227,20 @@
         let favoriteIds = []; // 登録された小説のIDリスト
         let currentViewingId = null; // 現在読んでいる小説のID
 
-        // カルーセル用のスライドデータ
+        // カルーセル用データ（左右の予告枠と連動するテキスト）
         const carouselSlides = [
-            { title: "Story Base 開設しました！", sub: "オリジナル小説募集中！", left: "コンテスト情報", right: "不具合修正の案内" },
-            { title: "夏の短編コンテスト開催！", sub: "詳細はこちらをクリック！", left: "Story Base 開設", right: "コンテスト情報" },
-            { title: "不具合修正とメンテのお知らせ", sub: "サーバーの強化が完了しました", left: "コンテスト情報", right: "Story Base 開設" }
+            { title: "Story Base 開設しました！", sub: "オリジナル小説募集中！", left: "広告枠C", right: "広告枠B" },
+            { title: "広告枠Bの内容です", sub: "ここにサブテキストB", left: "Story Base 開設", right: "広告枠C" },
+            { title: "広告枠Cの内容です", sub: "ここにサブテキストC", left: "広告枠B", right: "Story Base 開設" }
         ];
         let currentSlideIndex = 0;
 
         window.addEventListener('DOMContentLoaded', () => {
-            // 初期表示
+            // 初期画面とカルーセルの描画を実行（これで白飛びを防ぎます）
             showDefaultPage();
             updateCarousel();
 
-            // 検索まわりのイベント
+            // 検索イベント
             document.getElementById('search-btn').addEventListener('click', executeSearch);
             document.getElementById('search-input').addEventListener('keypress', (e) => {
                 if (e.key === 'Enter') executeSearch();
@@ -264,7 +259,7 @@
             });
         });
 
-        // 状態リセット：ホーム画面に戻す
+        // ホーム画面へのリセット
         function showDefaultPage() {
             document.getElementById('news-bar').style.display = 'block';
             document.getElementById('carousel-area').style.display = 'flex';
@@ -278,22 +273,24 @@
             renderRightFavoriteList();
         }
 
-        // カルーセルの表示更新
+        // カルーセルの中身を入れ替える処理
         function updateCarousel() {
             const slide = carouselSlides[currentSlideIndex];
-            document.getElementById('carousel-title').innerText = slide.title;
+            document.getElementById('carousel-title').innerHTML = slide.title === "Story Base 開設しました！" 
+                ? `<span class="logo" onclick="showDefaultPage()">S<span>tory</span> B<span>ase</span></span> 開設しました！`
+                : slide.title;
             document.getElementById('carousel-sub').innerText = slide.sub;
             document.getElementById('carousel-left-box').innerText = slide.left;
             document.getElementById('carousel-right-box').innerText = slide.right;
         }
 
-        // カルーセルの左右移動
+        // 矢印クリックでスライド変更
         function moveCarousel(dir) {
             currentSlideIndex = (currentSlideIndex + dir + carouselSlides.length) % carouselSlides.length;
             updateCarousel();
         }
 
-        // ホーム左：新着順の描画
+        // ホーム左：新着順
         function renderHomeRecentList() {
             const container = document.getElementById('recent-list');
             container.innerHTML = '';
@@ -310,7 +307,7 @@
             });
         }
 
-        // ホーム右：登録した小説の描画
+        // ホーム右：登録した小説
         function renderRightFavoriteList() {
             const container = document.getElementById('registered-list');
             container.innerHTML = '';
@@ -331,7 +328,7 @@
             });
         }
 
-        // 検索結果の構築
+        // 検索ロジック（ソート機能は除外）
         function executeSearch() {
             const keyword = document.getElementById('search-input').value.trim().toLowerCase();
 
@@ -363,7 +360,6 @@
                 }
             });
 
-            // 完全一致度でのみソート（並び替え機能は排除）
             filteredList.sort((a, b) => b._score - a._score);
 
             document.getElementById('search-result-title-text').innerText = `「 ${document.getElementById('search-input').value} 」の結果（${filteredList.length}件）`;
@@ -400,7 +396,7 @@
             });
         }
 
-        // 検索結果画面から直接お気に入り登録/解除できるUI（利便性向上）
+        // 検索結果からの直接登録UI
         function toggleFavoriteInline(id, element) {
             const index = favoriteIds.indexOf(id);
             if (index === -1) {
@@ -415,7 +411,7 @@
             renderRightFavoriteList();
         }
 
-        // 本文閲覧画面
+        // 本文閲覧
         function openViewer(id) {
             const novel = novelData.find(n => n.id === id);
             if (!novel) return;
@@ -439,7 +435,6 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // 閲覧画面の登録バッジ更新
         function updateViewerFavBadge() {
             const badge = document.getElementById('v-fav-badge');
             if (favoriteIds.includes(currentViewingId)) {
@@ -451,7 +446,6 @@
             }
         }
 
-        // 閲覧画面のお気に入り切り替え
         function toggleFavoriteFromViewer() {
             if (!currentViewingId) return;
 
