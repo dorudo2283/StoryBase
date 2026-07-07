@@ -73,14 +73,15 @@
         .arrow { font-size: 30px; cursor: pointer; user-select: none; padding: 10px; color: #888; transition: color 0.2s; }
         .arrow:hover { color: #333; }
         .side-box { 
-            width: 90px; height: 120px; border: 1px solid #e0e0e0; background-color: #fff; opacity: 0.4; 
+            width: 120px; height: 120px; border: 1px solid #e0e0e0; background-color: #fff; opacity: 0.4; 
             display: flex; align-items: center; justify-content: center; font-size: 11px; color: #666; text-align: center; padding: 8px;
-            border-radius: 4px;
+            border-radius: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
         }
         .main-banner {
             flex: 1; border: 2px solid #333; background-color: #fff; text-align: center; padding: 28px 24px;
-            border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); cursor: pointer; transition: transform 0.2s;
         }
+        .main-banner:hover { transform: translateY(-2px); }
         .banner-title { font-size: 26px; font-weight: 700; margin-bottom: 12px; color: #111; }
         .banner-sub { background-color: #f7d6c8; padding: 8px 16px; font-weight: bold; color: #b84116; border-radius: 4px; display: inline-block; }
 
@@ -186,10 +187,13 @@
             font-family: -apple-system, BlinkMacSystemFont, sans-serif;
             font-size: 22px; font-weight: 700; color: #0d2c54;
             margin: 0 0 20px 0; padding-bottom: 8px; border-bottom: 1px solid #e2e8f0;
-            scroll-margin-top: 40px; /* スクロール時の余白確保 */
+            scroll-margin-top: 40px;
         }
         .viewer-chapter-content { white-space: pre-wrap; word-wrap: break-word; margin-bottom: 30px; }
     </style>
+
+    <!-- 外部の小説データファイルを読み込み -->
+    <script src="Shosetsu.js"></script>
 </head>
 <body>
 
@@ -211,7 +215,7 @@
     <div class="carousel-container" id="carousel-area">
         <div class="arrow" onclick="moveCarousel(-1)">←</div>
         <div class="side-box" id="carousel-left-box"></div>
-        <div class="main-banner">
+        <div class="main-banner" onclick="clickCarouselBanner()">
             <div class="banner-title" id="carousel-title"></div>
             <div class="banner-sub" id="carousel-sub"></div>
         </div>
@@ -264,36 +268,10 @@
     </div>
 
     <script>
-        // バックアップ用ダミーデータ（実際のShosetsu.jsと同じ構造に完全同期）
-        const fallbackData = [
-            {
-                id: 1,
-                title: "絶望の翳し",
-                author: "タロウ",
-                genre: "ダークファンタジー",
-                description: "ある日、いつもの通りを歩いていたら急に人がぶつかってきて人生が入れ替わり！？",
-                chapters: [
-                    { title: "第一章：見知らぬ天井", content: "「おい、危ない！」それが、俺が元の身体で聞いた最後の言葉だった……。見知らぬ天井、見知らぬ手。鏡に映ったのは、街を牛耳る組織のボスの顔だったのだ。ここから俺の、絶望の第2の人生が始まる――。" },
-                    { title: "第二章：組織の洗礼", content: "目が覚めて三日。俺はボスとしての振る舞いを叩き込まれていた。机の上に積まれた書類、部下たちの冷徹な視線。間違えれば即、命はない。" }
-                ],
-                date: "2026-07-07"
-            },
-            {
-                id: 2,
-                title: "魔法の魔女",
-                author: "ミサキ",
-                genre: "日常・ファンタジー",
-                description: "不思議な力を持つ魔女の物語。",
-                chapters: [
-                    { title: "プロローグ：小さな魔法", content: "むかしむかし、あるところに小さな魔法を操る可愛い魔女がいました。彼女の魔法は、枯れた花をほんの少しだけ元気にするという、ささやかなもの。しかし、その優しさが街の人々の心を救っていくのです。" },
-                    { title: "エピソード1：枯れ木に咲く花", content: "ある日、魔女は一本の大きな枯れ木を見つけました。街の人々が諦めていたその木に、彼女がそっと手をかざすと、小さな緑の芽が吹き出しました。" }
-                ],
-                date: "2026-07-06"
-            }
-        ];
-        const novelData = (typeof window.novelData !== 'undefined') ? window.novelData : fallbackData;
+        // Shosetsu.js から読み込んだデータを安全に取得（存在しない場合は空配列）
+        const novelData = (typeof window.novelData !== 'undefined') ? window.novelData : [];
 
-        // 【LocalStorage対応】起動時にブラウザの保存領域からお気に入りデータを復元
+        // お気に入り機能の初期化
         let favoriteIds = [];
         try {
             const savedFavs = localStorage.getItem('story_base_favorites');
@@ -307,12 +285,6 @@
         let currentViewingId = null; 
         let currentScreen = 'home'; 
         let previousScreen = 'home'; 
-
-        const carouselSlides = [
-            { title: "Story Base 開設しました！", sub: "オリジナル小説募集中！", left: "広告枠C", right: "広告枠B" },
-            { title: "広告枠Bの内容です", sub: "ここにサブテキストB", left: "Story Base 開設", right: "広告枠C" },
-            { title: "広告枠Cの内容です", sub: "ここにサブテキストC", left: "広告枠B", right: "Story Base 開設" }
-        ];
         let currentSlideIndex = 0;
 
         window.addEventListener('DOMContentLoaded', () => {
@@ -338,14 +310,12 @@
             });
         });
 
-        // 状態変更時のUI更新 ＆ LocalStorageへの書き込み一元化
         function updateAllLists() {
             renderHomeRecentList();
             renderRightFavoriteList();
             if (currentScreen === 'search') renderSearchResults();
             if (currentScreen === 'viewer') updateViewerFavBadge();
 
-            // お気に入り状態をブラウザに永続保存
             try {
                 localStorage.setItem('story_base_favorites', JSON.stringify(favoriteIds));
             } catch (e) {
@@ -392,40 +362,57 @@
         }
 
         function updateCarousel() {
-            const slide = carouselSlides[currentSlideIndex];
-            document.getElementById('carousel-title').innerHTML = slide.title === "Story Base 開設しました！" 
-                ? `<span class="logo" onclick="resetToHome()">S<span>tory</span> B<span>ase</span></span> 開設しました！`
-                : slide.title;
-            document.getElementById('carousel-sub').innerText = slide.sub;
-            document.getElementById('carousel-left-box').innerText = slide.left;
-            document.getElementById('carousel-right-box').innerText = slide.right;
+            if (!novelData || novelData.length === 0) return;
+            
+            const len = novelData.length;
+            const currentNovel = novelData[currentSlideIndex];
+            
+            const leftIdx = (currentSlideIndex - 1 + len) % len;
+            const rightIdx = (currentSlideIndex + 1) % len;
+
+            document.getElementById('carousel-title').innerText = currentNovel.title;
+            document.getElementById('carousel-sub').innerText = `作者: ${currentNovel.author} / ジャンル: ${currentNovel.genre}`;
+            document.getElementById('carousel-left-box').innerText = novelData[leftIdx].title;
+            document.getElementById('carousel-right-box').innerText = novelData[rightIdx].title;
         }
 
         function moveCarousel(dir) {
-            currentSlideIndex = (currentSlideIndex + dir + carouselSlides.length) % carouselSlides.length;
+            if (!novelData || novelData.length === 0) return;
+            currentSlideIndex = (currentSlideIndex + dir + novelData.length) % novelData.length;
             updateCarousel();
         }
 
-      function renderHomeRecentList() {
-    const container = document.getElementById('recent-list');
-    container.innerHTML = '';
-    
-    const sorted = [...novelData].sort((a, b) => {
-        const dateA = a.date || "";
-        const dateB = b.date || "";
-        return dateB.localeCompare(dateA);
-    });
-    
-    sorted.forEach((novel, index) => {
-        const crown = index === 0 ? "👑 " : "";
-        container.insertAdjacentHTML('beforeend', `
-            <div class="novel-item">
-                <span class="rank-badge">${crown}${index + 1}</span>
-                <span class="novel-title-link" onclick="openViewer(${novel.id})">${novel.title}</span>
-            </div>
-        `);
-    });
-}
+        function clickCarouselBanner() {
+            if (!novelData || novelData.length === 0) return;
+            const targetNovel = novelData[currentSlideIndex];
+            openViewer(targetNovel.id);
+        }
+
+        function renderHomeRecentList() {
+            const container = document.getElementById('recent-list');
+            container.innerHTML = '';
+            
+            if (novelData.length === 0) {
+                container.innerHTML = '<p style="color:#aaa; text-align:center; padding:20px;">作品がありません。</p>';
+                return;
+            }
+
+            const sorted = [...novelData].sort((a, b) => {
+                const dateA = a.date || "";
+                const dateB = b.date || "";
+                return dateB.localeCompare(dateA);
+            });
+            
+            sorted.forEach((novel, index) => {
+                const crown = index === 0 ? "👑 " : "";
+                container.insertAdjacentHTML('beforeend', `
+                    <div class="novel-item">
+                        <span class="rank-badge">${crown}${index + 1}</span>
+                        <span class="novel-title-link" onclick="openViewer(${novel.id})">${novel.title}</span>
+                    </div>
+                `);
+            });
+        }
 
         function renderRightFavoriteList() {
             const container = document.getElementById('registered-list');
@@ -511,7 +498,6 @@
             });
         }
 
-        // 【大幅改修】chapters配列データ構造に完全対応した閲覧制御
         function openViewer(id) {
             const novel = novelData.find(n => n.id === id);
             if (!novel) return;
@@ -538,12 +524,10 @@
             contentArea.innerHTML = '';
             sidebarContainer.innerHTML = '';
 
-            // chapters配列が正しく存在する場合のループ処理
             if (novel.chapters && novel.chapters.length > 0) {
                 novel.chapters.forEach((ch, index) => {
                     const headingId = `chapter-idx-${index}`;
 
-                    // 本文（右側）に章ごとのラッパーを生成して挿入
                     const chapterHtml = `
                         <div class="viewer-chapter-wrapper">
                             <div class="viewer-chapter-heading" id="${headingId}">${ch.title}</div>
@@ -552,7 +536,6 @@
                     `;
                     contentArea.insertAdjacentHTML('beforeend', chapterHtml);
                     
-                    // 目次（左側サイドバー）にリンクとなる章タイトルを挿入
                     sidebarContainer.insertAdjacentHTML('beforeend', `
                         <li class="chapter-item" onclick="scrollToChapter('${headingId}')">
                             ${ch.title}
@@ -560,7 +543,6 @@
                     `);
                 });
             } else {
-                // chaptersが無い、または古いデータ形式だった場合のフォールバック
                 contentArea.innerText = novel.content || "本文が登録されていません。";
                 sidebarContainer.innerHTML = '<li class="chapter-item" style="color:#aaa; cursor:default;">章が設定されていません</li>';
             }
@@ -578,6 +560,7 @@
 
         function updateViewerFavBadge() {
             const badge = document.getElementById('v-fav-badge');
+            if (!badge) return;
             if (favoriteIds.includes(currentViewingId)) {
                 badge.innerText = "登録済み";
                 badge.className = "status-badge is-fav";
