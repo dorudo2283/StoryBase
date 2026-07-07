@@ -26,7 +26,7 @@
         .logo span { color: #2a7b4c; }
         
         /* 検索窓（クリアボタン「×」付き） */
-        .search-area { display: flex; gap: 8px; align-items: center; }
+        .search-area { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
         .search-input-wrapper { position: relative; display: inline-block; }
         .search-input-wrapper input {
             padding: 6px 30px 6px 12px;
@@ -44,6 +44,14 @@
         .search-area button {
             padding: 6px 12px; background-color: #fff; border: 1px solid #999;
             border-radius: 4px; cursor: pointer; font-size: 14px;
+        }
+
+        /* 文字サイズ変更UI用スタイル（検索エリアに馴染むデザイン） */
+        .font-size-selector {
+            display: inline-flex; align-items: center; gap: 5px; background: #fff; padding: 4px 8px; border-radius: 4px; border: 1px solid #ccc; font-size: 13px; color: #333; height: 31px;
+        }
+        .font-size-selector select {
+            padding: 2px 4px; border: 1px solid #ccc; border-radius: 3px; font-size: 13px; cursor: pointer; outline: none; background: #fff;
         }
 
         /* お知らせバー */
@@ -171,7 +179,7 @@
             padding: 0 10px 40px 10px;
         }
 
-        /* 改修点①：右側章一覧を本文の「完全枠外」へ（背景を完全に分けて浮かせ、スクロール追従） */
+        /* 右側章一覧を本文の「完全枠外」へ（背景を完全に分けて浮かせ、スクロール追従） */
         .viewer-sidebar {
             width: 280px;
             position: sticky;
@@ -211,6 +219,17 @@
                 <button id="clear-btn" class="clear-btn">×</button>
             </div>
             <button id="search-btn">検索</button>
+            
+            <!-- 検索ボタンの隣に文字サイズ変更UIを配置 -->
+            <div class="font-size-selector">
+                <label for="font-size-select">文字サイズ：</label>
+                <select id="font-size-select" onchange="changeBodyFontSize(this.value)">
+                    <option value="18px">小</option>
+                    <option value="22px" selected>中（標準）</option>
+                    <option value="26px">大</option>
+                    <option value="30px">特大</option>
+                </select>
+            </div>
         </div>
     </header>
 
@@ -288,7 +307,7 @@
         ];
         const finalNovelData = (typeof novelData !== 'undefined') ? novelData : backupData;
 
-        // 改修点②：LocalStorageから最初にお気に入りを復元（データ永続化）
+        // LocalStorageから最初にお気に入りを復元（データ永続化）
         let favoriteIds = [];
         try {
             const savedFavorites = localStorage.getItem('story_base_favorites');
@@ -334,12 +353,20 @@
             });
         });
 
+        // 文字サイズ変更用の関数
+        function changeBodyFontSize(size) {
+            const bodyText = document.getElementById('v-content');
+            if (bodyText) {
+                bodyText.style.fontSize = size;
+            }
+        }
+
         // 状態変更時のUI一斉更新とローカルストレージ保存の連動
         function updateAllLists() {
             renderHomeRecentList();
             renderRightFavoriteList();
             
-            // 改修点②：状態が変化した瞬間に永続化処理を実行
+            // 状態が変化した瞬間に永続化処理を実行
             try {
                 localStorage.setItem('story_base_favorites', JSON.stringify(favoriteIds));
             } catch (e) {
@@ -568,6 +595,10 @@
             const currentChapter = novel.chapters[currentChapterIndex];
             document.getElementById('v-chapter-title').innerText = currentChapter.title;
             document.getElementById('v-content').innerText = currentChapter.content;
+
+            // 現在選択されているセレクトボックスの文字サイズを適用
+            const currentSize = document.getElementById('font-size-select').value;
+            changeBodyFontSize(currentSize);
         }
 
         function switchChapter(chapterIndex) {
