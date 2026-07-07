@@ -25,130 +25,122 @@
         .logo { font-size: 24px; font-weight: bold; color: #0d2c54; cursor: pointer; }
         .logo span { color: #2a7b4c; }
         
-        /* 検索窓まわり（クリアボタン追加のためのラッパー） */
+        /* 検索窓（クリアボタン「×」付き） */
         .search-area { display: flex; gap: 8px; align-items: center; }
-        .search-input-wrapper {
-            position: relative;
-            display: inline-block;
-        }
+        .search-input-wrapper { position: relative; display: inline-block; }
         .search-input-wrapper input {
-            padding: 6px 30px 6px 12px; /* 右側にバツボタンのスペースを確保 */
+            padding: 6px 30px 6px 12px;
             width: 250px;
             border: 1px solid #ccc;
             border-radius: 4px;
             font-size: 14px;
         }
-        /* クリアボタン（×）のスタイル */
         .clear-btn {
-            position: absolute;
-            right: 8px;
-            top: 50%;
-            transform: translateY(-50%);
-            border: none;
-            background: none;
-            color: #999;
-            font-size: 16px;
-            cursor: pointer;
-            display: none; /* 文字が入るまで非表示 */
+            position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+            border: none; background: none; color: #999; font-size: 16px; cursor: pointer; display: none;
         }
         .clear-btn:hover { color: #333; }
 
         .search-area button, .select-sort {
-            padding: 6px 12px;
-            background-color: #fff;
-            border: 1px solid #999;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
+            padding: 6px 12px; background-color: #fff; border: 1px solid #999;
+            border-radius: 4px; cursor: pointer; font-size: 14px;
         }
 
-        /* お知らせ */
+        /* お知らせバー */
         .news-bar {
-            background-color: #ffe4e4;
-            padding: 8px;
-            text-align: center;
-            font-size: 14px;
-            border-bottom: 1px solid #ffcdcd;
+            background-color: #ffe4e4; padding: 8px; text-align: center;
+            font-size: 14px; border-bottom: 1px solid #ffcdcd;
         }
 
-        /* 各種セクション（画面切り替え用） */
-        .page-section {
-            max-width: 1000px;
-            margin: 30px auto;
-            padding: 0 20px;
+        /* カルーセル（スライダー枠） */
+        .carousel-container {
+            display: flex; align-items: center; justify-content: center;
+            margin: 25px auto; max-width: 1000px; gap: 20px; padding: 0 20px;
         }
+        .arrow { font-size: 30px; cursor: pointer; user-select: none; padding: 10px; }
+        .side-box { width: 80px; height: 120px; border: 1px solid #ccc; background-color: #fff; opacity: 0.4; }
+        .main-banner {
+            flex: 1; border: 2px solid #333; background-color: #fff; text-align: center; padding: 25px 20px;
+        }
+        .banner-title { font-size: 26px; margin-bottom: 10px; }
+        .banner-sub { background-color: #f7d6c8; padding: 8px; font-weight: bold; color: #b84116; }
 
-        /* 【初期画面】2カラムレイアウト */
-        .default-layout {
-            display: flex; border: 1px solid #aaa; background-color: #fff;
+        /* 画像通りのメイン2カラム構造 */
+        .content-wrapper {
+            display: flex; max-width: 1200px; margin: 0 auto 50px auto;
+            border: 1px solid #aaa; background-color: #fff;
         }
-        .column { flex: 1; min-height: 400px; }
+        .column { flex: 1; min-height: 450px; display: flex; flex-direction: column; }
         .column:first-child { border-right: 1px solid #aaa; }
+        
+        /* カラム見出し（グレー背景・太字・レタースペース） */
         .column-title {
             background-color: #ccc; padding: 12px; text-align: center;
             font-size: 18px; font-weight: bold; letter-spacing: 0.3em;
+            border-bottom: 1px solid #aaa;
         }
-        .list-container { padding: 20px; }
-        .scrollable-list { max-height: 400px; overflow-y: auto; }
+        .list-container { padding: 20px; flex: 1; }
+        .scrollable-list { max-height: 450px; overflow-y: auto; }
 
-        /* 小説アイテム（共通） */
+        /* 小説アイテム（画像のデザインに極力近く調整） */
         .novel-item {
-            margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px dashed #eee;
+            margin-bottom: 15px; padding: 10px; border: 1px solid #ddd;
+            background-color: #fafafa; border-radius: 4px;
+            display: flex; flex-direction: column; gap: 5px;
         }
+        .novel-header-line { display: flex; justify-content: space-between; align-items: center; }
         .novel-title-link {
-            color: #0066cc; text-decoration: none; font-weight: bold; font-size: 18px; cursor: pointer;
+            color: #0066cc; text-decoration: underline; font-weight: bold; font-size: 18px; cursor: pointer;
         }
-        .novel-title-link:hover { text-decoration: underline; }
-        .rank-badge { color: #ffaa00; font-weight: bold; margin-right: 5px; }
+        .novel-title-link:hover { color: #004499; }
+        
+        .novel-meta-info { font-size: 13px; color: #555; text-align: right; line-height: 1.4; }
+        .novel-desc { font-size: 14px; color: #666; margin-top: 5px; line-height: 1.4; }
 
-        /* 【画面1：検索結果画面】専用スタイル */
-        .search-result-header {
-            text-align: center; font-size: 22px; color: #666; margin-bottom: 25px;
-        }
-        .search-result-box {
-            border: 2px solid #333; background-color: #ccc;
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 15px 20px; width: 100%;
-        }
-        .result-main { display: flex; align-items: baseline; gap: 40px; }
-        .result-title { font-size: 24px; font-weight: bold; color: #0066cc; cursor: pointer; text-decoration: underline; }
-        .result-meta { font-size: 14px; color: #333; line-height: 1.6; }
-        .result-fav-status { font-size: 14px; color: #333; text-align: right; }
+        /* 王冠・順位バッジ */
+        .rank-badge { color: #ffaa00; font-weight: bold; margin-right: 5px; font-size: 18px; }
 
-        /* 【画面2：本文閲覧画面】専用スタイル（明朝体） */
-        .viewer-header {
+        /* 【改善】しっかりとした登録UI（バッジ風デザイン） */
+        .status-badge {
+            display: inline-block; padding: 3px 8px; font-size: 12px; border-radius: 3px;
+            border: 1px solid #ccc; background-color: #f0f0f0; color: #666; cursor: pointer;
+            user-select: none; transition: all 0.2s;
+        }
+        .status-badge.is-fav {
+            background-color: #e6f4ea; color: #137333; border-color: #a3dab8; font-weight: bold;
+        }
+        .status-badge:hover { opacity: 0.8; }
+
+        /* 検索結果の件数アナウンス */
+        .search-summary {
+            font-size: 15px; color: #666; margin-bottom: 15px; padding-bottom: 5px;
+            border-bottom: 2px solid #ff8e8e; font-weight: bold;
+        }
+
+        /* 本文表示用のコンテナ（明朝体スタイル） */
+        .novel-content-viewer {
+            display: flex; flex-direction: column; gap: 15px;
+        }
+        .viewer-top-meta {
             display: flex; justify-content: space-between; align-items: flex-start;
-            margin-bottom: 40px;
+            border-bottom: 1px solid #eee; padding-bottom: 10px;
         }
-        .viewer-left-actions { display: flex; flex-direction: column; gap: 10px; }
-        /* 登録のやつ ボタン */
-        .fav-toggle-btn {
-            padding: 6px 12px; background-color: #fff; border: 1px solid #aaa;
-            cursor: pointer; font-size: 14px; text-align: center;
+        .viewer-back-btn {
+            padding: 4px 8px; font-size: 12px; background-color: #eee;
+            border: 1px solid #ccc; border-radius: 3px; cursor: pointer;
         }
-        .fav-toggle-btn.active { background-color: #ffcc00; border-color: #e6b800; }
-        /* トップに戻るボタン */
-        .back-to-top {
-            padding: 4px 8px; font-size: 12px; background-color: #eee; border: 1px solid #ccc;
-            cursor: pointer; text-align: center;
-        }
-        
-        .viewer-center-title { font-size: 32px; font-weight: bold; text-align: center; flex: 1; }
-        .viewer-right-meta { text-align: right; font-size: 14px; color: #333; line-height: 1.6; }
-        
-        /* 本文エリア（明朝体指定） */
-        .viewer-body-text {
+        .viewer-main-text {
             font-family: 'Shippori Mincho', 'YuMincho', '游明朝', 'MS Mincho', Georgia, serif;
-            font-size: 20px; line-height: 2.4; letter-spacing: 0.08em;
-            white-space: pre-wrap; word-wrap: break-word;
-            max-width: 750px; margin: 0 auto; padding-bottom: 100px;
+            font-size: 18px; line-height: 2.3; letter-spacing: 0.05em;
+            white-space: pre-wrap; word-wrap: break-word; color: #222;
+            padding-top: 10px; max-height: 400px; overflow-y: auto; /* 長文はスクロールで読めるように */
         }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="logo" onclick="showDefaultPage()">S<span>tory</span> B<span>ase</span> <span style="font-size: 14px; color:#333; font-weight:normal;">〜 祝！WEB開設 〜</span></div>
+        <div class="logo" onclick="resetToHome()">S<span>tory</span> B<span>ase</span> <span style="font-size: 14px; color:#333; font-weight:normal;">〜 祝！WEB開設 〜</span></div>
         <div class="search-area">
             <div class="search-input-wrapper">
                 <input type="text" id="search-input" placeholder="作品名・作者名で検索">
@@ -167,146 +159,122 @@
         お知らせ：タロウが作った小説WEBサイト、Story Baseを開設しました！オリジナルの小説作品を応募しています！
     </div>
 
-
-    <div id="section-default" class="page-section">
-        <div class="default-layout">
-            <div class="column">
-                <div class="column-title">新 着 順</div>
-                <div class="list-container" id="recent-list"></div>
-            </div>
-            <div class="column">
-                <div class="column-title">登 録 し た 小 説</div>
-                <div class="list-container scrollable-list" id="registered-list"></div>
-            </div>
+    <div class="carousel-container">
+        <div class="side-box"></div>
+        <div class="arrow">←</div>
+        <div class="main-banner">
+            <div class="banner-title"><span class="logo" onclick="resetToHome()">S<span>tory</span> B<span>ase</span></span> 開設しました！</div>
+            <div class="banner-sub">オリジナル小説募集中！</div>
         </div>
+        <div class="arrow">→</div>
+        <div class="side-box"></div>
     </div>
 
-
-    <div id="section-search-result" class="page-section" style="display: none;">
-        <div class="search-result-header" id="search-result-title-text">
-            「 絶望 」の結果（1件）
+    <div class="content-wrapper">
+        <div class="column">
+            <div class="column-title" id="left-column-header">新 着 順</div>
+            <div class="list-container" id="left-column-content">
+                </div>
         </div>
-        <div id="search-results-container">
-            </div>
-    </div>
 
-
-    <div id="section-viewer" class="page-section" style="display: none;">
-        <div class="viewer-header">
-            <div class="viewer-left-actions">
-                <button class="fav-toggle-btn" id="v-fav-btn" onclick="toggleFavoriteFromViewer()">登録のやつ</button>
-                <button class="back-to-top" onclick="showDefaultPage()">トップへ戻る</button>
-            </div>
-            <div class="viewer-center-title" id="v-title">作品タイトル</div>
-            <div class="viewer-right-meta">
-                <div id="v-date">2026年7月7日</div>
-                <div id="v-author">作者：タロウ</div>
-            </div>
-        </div>
-        <div class="viewer-body-text" id="v-content">
-            ここに本文が明朝体で表示されます。
+        <div class="column">
+            <div class="column-title">登 録 し た 小 説</div>
+            <div class="list-container scrollable-list" id="registered-list">
+                </div>
         </div>
     </div>
-
 
     <script src="Shosetsu.js"></script>
     <script>
-        // お気に入り作品のIDを保存する配列
+        // お気に入り登録された作品のID配列
         let favoriteIds = [];
-        // 現在閲覧中の作品IDを保持
-        let currentViewingId = null;
 
         window.addEventListener('DOMContentLoaded', () => {
-            // 初期状態の画面描画
-            renderDefaultLists();
+            // 初期トップ画面の描画
+            renderHomeRecentList();
+            renderRightFavoriteList();
 
-            // 検索・並び替えイベント設定
-            document.getElementById('search-btn').addEventListener('click', executeSearch);
+            // 検索・ソートのイベント登録
+            document.getElementById('search-btn').addEventListener('click', handleSearchAndSort);
             document.getElementById('search-input').addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') executeSearch();
+                if (e.key === 'Enter') handleSearchAndSort();
             });
-            document.getElementById('sort-select').addEventListener('change', executeSearch);
+            document.getElementById('sort-select').addEventListener('change', handleSearchAndSort);
 
-            // 検索窓クリア（×）ボタンの制御
+            // クリアボタン（×）の制御
             const searchInput = document.getElementById('search-input');
             const clearBtn = document.getElementById('clear-btn');
 
             searchInput.addEventListener('input', () => {
                 clearBtn.style.display = searchInput.value.length > 0 ? 'block' : 'none';
             });
-
             clearBtn.addEventListener('click', () => {
                 searchInput.value = '';
                 clearBtn.style.display = 'none';
                 searchInput.focus();
-                showDefaultPage(); // クリアしたら初期画面に戻す
+                resetToHome();
             });
         });
 
-        // 画面切り替え：初期トップ画面を表示
-        function showDefaultPage() {
-            document.getElementById('section-default').style.display = 'block';
-            document.getElementById('section-search-result').style.display = 'none';
-            document.getElementById('section-viewer').style.display = 'none';
-            currentViewingId = null;
-            renderDefaultLists();
-        }
-
-        // 初期トップ画面（2カラム）のリスト描画
-        function renderDefaultLists() {
-            // 1. 左カラム（新着順：デフォルトは全件を日付順）
-            const recentContainer = document.getElementById('recent-list');
-            recentContainer.innerHTML = '';
-            const sortedByDate = [...novelData].sort((a, b) => new Date(b.date) - new Date(a.date));
-            
-            sortedByDate.forEach((novel, index) => {
-                recentContainer.insertAdjacentHTML('beforeend', `
-                    <div class="novel-item">
-                        <span class="rank-badge">${index + 1}</span>
-                        <span class="novel-title-link" onclick="openViewer(${novel.id})">${novel.title}</span>
-                    </div>
-                `);
-            });
-
-            // 2. 右カラム（登録した小説）
+        // 完全なホーム状態（初期状態）に戻す
+        function resetToHome() {
+            document.getElementById('search-input').value = '';
+            document.getElementById('clear-btn').style.display = 'none';
+            document.getElementById('sort-select').value = 'none';
+            renderHomeRecentList();
             renderRightFavoriteList();
         }
 
-        // 右カラム（登録した小説）の更新
-        function renderRightFavoriteList() {
-            const favContainer = document.getElementById('registered-list');
-            favContainer.innerHTML = '';
-            const favNovels = novelData.filter(n => favoriteIds.includes(n.id));
+        // 1. デフォルトの【新着順】を描画（左カラム）
+        function renderHomeRecentList() {
+            document.getElementById('left-column-header').innerText = "新 着 順";
+            const container = document.getElementById('left-column-content');
+            container.innerHTML = '';
 
-            if (favNovels.length === 0) {
-                favContainer.innerHTML = '<p style="color:#aaa; text-align:center; padding:20px;">登録された小説はここに表示されます。</p>';
-                return;
-            }
+            // 日付の新しい順にソート
+            const sorted = [...novelData].sort((a, b) => new Date(b.date) - new Date(a.date));
 
-            favNovels.forEach((novel, index) => {
-                favContainer.insertAdjacentHTML('beforeend', `
+            sorted.forEach((novel, index) => {
+                const isFav = favoriteIds.includes(novel.id);
+                const badgeClass = isFav ? "status-badge is-fav" : "status-badge";
+                const badgeText = isFav ? "登録済み" : "未登録";
+                
+                const crown = index === 0 ? "👑 " : "";
+
+                const html = `
                     <div class="novel-item">
-                        <span class="rank-badge">${index + 1}</span>
-                        <span class="novel-title-link" onclick="openViewer(${novel.id})">${novel.title}</span>
+                        <div class="novel-header-line">
+                            <div>
+                                <span class="rank-badge">${crown}${index + 1}</span>
+                                <span class="novel-title-link" onclick="openNovelViewer(${novel.id})">${novel.title}</span>
+                            </div>
+                            <div class="novel-meta-info">
+                                ${novel.date}<br>作者：${novel.author}
+                            </div>
+                        </div>
+                        <p class="novel-desc">${novel.description}</p>
+                        <div>
+                            <span class="${badgeClass}" onclick="toggleFavorite(${novel.id}, 'home')">${badgeText}</span>
+                        </div>
                     </div>
-                `);
+                `;
+                container.insertAdjacentHTML('beforeend', html);
             });
         }
 
-        // 検索処理コアロジック（画面1への切り替え）
-        function executeSearch() {
+        // 2. 【検索結果】を描画（左カラムを画像1のレイアウトに差し替え）
+        function handleSearchAndSort() {
             const keyword = document.getElementById('search-input').value.trim().toLowerCase();
             const sortVal = document.getElementById('sort-select').value;
 
             if (keyword === "") {
-                showDefaultPage();
+                renderHomeRecentList();
                 return;
             }
 
-            // 画面を検索結果セクションに切り替え
-            document.getElementById('section-default').style.display = 'none';
-            document.getElementById('section-search-result').style.display = 'block';
-            document.getElementById('section-viewer').style.display = 'none';
+            document.getElementById('left-column-header').innerText = "検 索 結 果";
+            const container = document.getElementById('left-column-content');
+            container.innerHTML = '';
 
             // スコアリング処理（完全一致を最上位にするため）
             let filteredList = [];
@@ -326,7 +294,7 @@
                 }
             });
 
-            // ソート適用（検索適合度スコア優先、その後に新着・古い順）
+            // ソートアルゴリズム適用（適合スコア最優先、次点で日付条件）
             filteredList.sort((a, b) => {
                 if (a._score !== b._score) return b._score - a._score;
                 if (sortVal === "new") return new Date(b.date) - new Date(a.date);
@@ -334,99 +302,136 @@
                 return 0;
             });
 
-            // 結果ヘッダーテキストの更新
-            document.getElementById('search-result-title-text').innerText = `「 ${document.getElementById('search-input').value} 」の結果（${filteredList.length}件）`;
-
-            // 検索結果の描画（ご提示画像1のスタイルを完全再現）
-            const resultsContainer = document.getElementById('search-results-container');
-            resultsContainer.innerHTML = '';
+            // 検索結果件数の見出しを追加
+            container.insertAdjacentHTML('beforeend', `
+                <div class="search-summary">「 ${document.getElementById('search-input').value} 」の結果（${filteredList.length}件）</div>
+            `);
 
             if (filteredList.length === 0) {
-                resultsContainer.innerHTML = '<p style="text-align:center; color:#999; padding:40px;">該当する作品がありませんでした。</p>';
+                container.insertAdjacentHTML('beforeend', '<p style="color:#999; text-align:center; padding:20px;">該当する作品が見つかりませんでした。</p>');
                 return;
             }
 
+            // 画像1のレイアウト構造を忠実に再現
             filteredList.forEach(novel => {
                 const isFav = favoriteIds.includes(novel.id);
-                // 登録状態のテキスト判定
-                const favStatusText = isFav ? "登録済み" : "登録してない";
+                const badgeClass = isFav ? "status-badge is-fav" : "status-badge";
+                const badgeText = isFav ? "登録済み" : "未登録";
 
-                // 日付フォーマットの調整 (YYYY年MM月DD日)
                 const dateObj = new Date(novel.date);
                 const formattedDate = `${dateObj.getFullYear()}年${dateObj.getMonth() + 1}月${dateObj.getDate()}日`;
 
                 const html = `
-                    <div class="search-result-box" style="margin-bottom: 15px;">
-                        <div class="result-main">
-                            <div class="result-title" onclick="openViewer(${novel.id})">${novel.title}</div>
-                            <div class="result-meta">
-                                ${formattedDate}<br>
-                                作者：${novel.author}
+                    <div class="novel-item">
+                        <div class="novel-header-line">
+                            <span class="novel-title-link" style="font-size: 20px;" onclick="openNovelViewer(${novel.id})">${novel.title}</span>
+                            <div class="novel-meta-info">
+                                ${formattedDate}<br>作者：${novel.author}
                             </div>
-                        </div>
-                        <div class="result-fav-status">
-                            ${favStatusText}
+                            <div>
+                                <span class="${badgeClass}" onclick="toggleFavorite(${novel.id}, 'search')">${badgeText}</span>
+                            </div>
                         </div>
                     </div>
                 `;
-                resultsContainer.insertAdjacentHTML('beforeend', html);
+                container.insertAdjacentHTML('beforeend', html);
             });
         }
 
-        // 本文閲覧処理（画面2への切り替え）
-        function openViewer(id) {
+        // 3. 【本文閲覧】を描画（左カラムを画像2のレイアウトに差し替え）
+        function openNovelViewer(id) {
             const novel = novelData.find(n => n.id === id);
             if (!novel) return;
 
-            currentViewingId = id;
+            document.getElementById('left-column-header').innerText = "小 説 閲 読";
+            const container = document.getElementById('left-column-content');
+            container.innerHTML = '';
 
-            // 各セクションの表示切り替え
-            document.getElementById('section-default').style.display = 'none';
-            document.getElementById('section-search-result').style.display = 'none';
-            document.getElementById('section-viewer').style.display = 'block';
+            const isFav = favoriteIds.includes(novel.id);
+            const badgeClass = isFav ? "status-badge is-fav" : "status-badge";
+            const badgeText = isFav ? "登録済み" : "未登録";
 
-            // データ注入
-            document.getElementById('v-title').innerText = novel.title;
-            document.getElementById('v-author').innerText = `作者：${novel.author}`;
-            
             const dateObj = new Date(novel.date);
-            document.getElementById('v-date').innerText = `${dateObj.getFullYear()}年${dateObj.getMonth() + 1}月${dateObj.getDate()}日`;
+            const formattedDate = `${dateObj.getFullYear()}年${dateObj.getMonth() + 1}月${dateObj.getDate()}日`;
+
+            // 画像2の構成（左に登録ボタン、中央に大きなタイトル、右にメタ情報、下に明朝体本文）
+            const html = `
+                <div class="novel-content-viewer">
+                    <div class="viewer-top-meta">
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+                            <span class="${badgeClass}" id="viewer-fav-badge" onclick="toggleFavorite(${novel.id}, 'viewer')">${badgeText}</span>
+                            <button class="viewer-back-btn" onclick="renderHomeRecentList()">一覧に戻る</button>
+                        </div>
+                        <div style="font-size: 22px; font-weight: bold; text-align: center; flex: 1; padding: 0 10px;">
+                            ${novel.title}
+                        </div>
+                        <div class="novel-meta-info">
+                            ${formattedDate}<br>作者：${novel.author}
+                        </div>
+                    </div>
+                    <div class="viewer-main-text">${novel.content}</div>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', html);
             
-            document.getElementById('v-content').innerText = novel.content;
-
-            // 閲覧画面の「登録のやつ」ボタンの状態更新
-            updateViewerFavButton();
-
-            // 認知科学：画面が切り替わったことを即座に認識させるため、最上部へスムーズスクロール
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            // 本文の上部へスムーズに位置を合わせる
+            document.getElementById('left-column-header').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
-        // 閲覧画面内の「登録のやつ」ボタンの状態反転
-        function updateViewerFavButton() {
-            const favBtn = document.getElementById('v-fav-btn');
-            if (favoriteIds.includes(currentViewingId)) {
-                favBtn.innerText = "登録済み";
-                favBtn.classList.add('active');
-            } else {
-                favBtn.innerText = "登録のやつ";
-                favBtn.classList.remove('active');
+        // 4. 右カラム【登録した小説】の描画と同期
+        function renderRightFavoriteList() {
+            const container = document.getElementById('registered-list');
+            container.innerHTML = '';
+
+            const favNovels = novelData.filter(n => favoriteIds.includes(n.id));
+
+            if (favNovels.length === 0) {
+                container.innerHTML = '<p style="color:#aaa; text-align:center; padding:20px;">登録された小説はここに表示されます。</p>';
+                return;
             }
+
+            favNovels.forEach((novel, index) => {
+                const html = `
+                    <div class="novel-item" style="padding: 8px; margin-bottom: 10px;">
+                        <div>
+                            <span class="rank-badge">${index + 1}</span>
+                            <span class="novel-title-link" onclick="openNovelViewer(${novel.id})">${novel.title}</span>
+                        </div>
+                    </div>
+                `;
+                container.insertAdjacentHTML('beforeend', html);
+            });
         }
 
-        // 閲覧画面からのお気に入り登録・解除処理
-        function toggleFavoriteFromViewer() {
-            if (!currentViewingId) return;
-
-            const index = favoriteIds.indexOf(currentViewingId);
+        // お気に入り登録のオン・オフ切り替え（どこから押されても状態を同期）
+        function toggleFavorite(id, fromContext) {
+            const index = favoriteIds.indexOf(id);
             if (index === -1) {
-                favoriteIds.push(currentViewingId); // 登録
+                favoriteIds.push(id);
             } else {
-                favoriteIds.splice(index, 1); // 解除
+                favoriteIds.splice(index, 1);
             }
 
-            // 状態をボタンと裏のリストに即時反映
-            updateViewerFavButton();
+            // 右側の「登録した小説」リストを即時更新
             renderRightFavoriteList();
+
+            // 現在どの画面を表示しているかに応じて、左カラムの表示状態だけをスマートに維持・部分更新
+            if (fromContext === 'home') {
+                renderHomeRecentList();
+            } else if (fromContext === 'search') {
+                handleSearchAndSort();
+            } else if (fromContext === 'viewer') {
+                // 閲覧画面内のバッジだけを滑らかに書き換える（ページがブレないようにするため）
+                const badge = document.getElementById('viewer-fav-badge');
+                const isFav = favoriteIds.includes(id);
+                if (isFav) {
+                    badge.innerText = "登録済み";
+                    badge.className = "status-badge is-fav";
+                } else {
+                    badge.innerText = "未登録";
+                    badge.className = "status-badge";
+                }
+            }
         }
     </script>
 </body>
