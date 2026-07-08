@@ -1,119 +1,116 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="ja" id="html-root" style="font-size: 16px;"> <!-- 【修正点1】文字サイズの基準となるルート要素 -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Story Base 〜 祝！WEB開設 〜</title>
     <style>
+        /* 【修正点2】すべてのフォントサイズ（px）を、ルート基準の相対単位（rem）に一括変換
+           1rem = 基準の16px として計算し、デザイン比率を完全に維持しています */
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
             font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', sans-serif;
             background-color: #f9f9f9;
             color: #333;
+            font-size: 1rem; /* 16px */
         }
 
         /* ヘッダー：常に最上部に固定（検索窓あり） */
         header {
             background-color: #ff8e8e;
-            padding: 15px 20px;
+            padding: 0.9375rem 1.25rem; /* 15px 20px */
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 15px;
+            gap: 0.9375rem; /* 15px */
         }
-        .logo { font-size: 24px; font-weight: bold; color: #0d2c54; cursor: pointer; user-select: none; }
+        .logo { font-size: 1.5rem; font-weight: bold; color: #0d2c54; cursor: pointer; user-select: none; } /* 24px */
         .logo span { color: #2a7b4c; }
         
         /* 検索窓（クリアボタン「×」付き） */
-        .search-area { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+        .search-area { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; } /* 8px */
         .search-input-wrapper { position: relative; display: inline-block; }
         
-        /* 【修正点2】iPhone(iOS)でinputの文字サイズが16px未満だと自動ズームされるため、
-           スマートフォンの場合のみ見た目のサイズ感を維持しつつ16pxに変更（フォームのズームを防止） */
         .search-input-wrapper input {
-            padding: 6px 30px 6px 12px;
-            width: 250px;
+            padding: 0.375rem 1.875rem 0.375rem 0.75rem; /* 6px 30px 6px 12px */
+            width: 15.625rem; /* 250px */
             border: 1px solid #ccc;
             border-radius: 4px;
-            font-size: 14px;
+            font-size: 0.875rem; /* 14px */
         }
         @media (max-width: 768px) {
             .search-input-wrapper input {
-                font-size: 16px; /* ズーム防止用 */
-                padding: 4px 30px 4px 12px; /* 高さが変わりすぎないよう微調整 */
+                font-size: 1rem; /* スマホ時のズーム防止（16px） */
+                padding: 0.25rem 1.875rem 0.25rem 0.75rem;
             }
         }
 
         .clear-btn {
-            position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
-            border: none; background: none; color: #999; font-size: 16px; cursor: pointer; display: none;
+            position: absolute; right: 0.5rem; top: 50%; transform: translateY(-50%);
+            border: none; background: none; color: #999; font-size: 1rem; cursor: pointer; display: none;
         }
         .clear-btn:hover { color: #333; }
 
         .search-area button {
-            padding: 6px 12px; background-color: #fff; border: 1px solid #999;
-            border-radius: 4px; cursor: pointer; font-size: 14px;
+            padding: 0.375rem 0.75rem; background-color: #fff; border: 1px solid #999;
+            border-radius: 4px; cursor: pointer; font-size: 0.875rem; /* 14px */
         }
 
         /* 文字サイズ変更UI用スタイル（検索エリアに馴染むデザイン） */
         .font-size-selector {
-            display: inline-flex; align-items: center; gap: 5px; background: #fff; padding: 4px 8px; border-radius: 4px; border: 1px solid #ccc; font-size: 13px; color: #333; height: 31px;
+            display: inline-flex; align-items: center; gap: 0.3125rem; background: #fff; padding: 0.25rem 0.5rem; border-radius: 4px; border: 1px solid #ccc; font-size: 0.8125rem; color: #333; height: 1.9375rem;
         }
         .font-size-selector select {
-            padding: 2px 4px; border: 1px solid #ccc; border-radius: 3px; font-size: 13px; cursor: pointer; outline: none; background: #fff;
+            padding: 0.125rem 0.25rem; border: 1px solid #ccc; border-radius: 3px; font-size: 0.8125rem; cursor: pointer; outline: none; background: #fff;
         }
-        /* 【修正点2に関連】セレクトボックスもスマホでのズーム対象になるため対策 */
         @media (max-width: 768px) {
             .font-size-selector select {
-                font-size: 16px;
+                font-size: 1rem; /* スマホ時のズーム防止 */
             }
         }
 
         /* お知らせバー */
         .news-bar {
-            background-color: #ffe4e4; padding: 8px; text-align: center;
-            font-size: 14px; border-bottom: 1px solid #ffcdcd;
+            background-color: #ffe4e4; padding: 0.5rem; text-align: center;
+            font-size: 0.875rem; border-bottom: 1px solid #ffcdcd; /* 14px */
         }
 
         /* カルーセル */
         .carousel-container {
             display: flex; align-items: center; justify-content: center;
-            margin: 25px auto; max-width: 1000px; gap: 20px; padding: 0 20px;
+            margin: 1.5625rem auto; max-width: 62.5rem; gap: 1.25rem; padding: 0 1.25rem; /* 25px, 1000px, 20px */
         }
-        .arrow { font-size: 30px; cursor: pointer; user-select: none; padding: 10px; }
+        .arrow { font-size: 1.875rem; cursor: pointer; user-select: none; padding: 0.625rem; } /* 30px, 10px */
         .side-box { 
-            width: 80px; height: 120px; border: 1px solid #ccc; background-color: #fff; opacity: 0.4; 
-            display: flex; align-items: center; justify-content: center; font-size: 11px; color: #666; text-align: center; padding: 5px;
+            width: 5rem; height: 7.5rem; border: 1px solid #ccc; background-color: #fff; opacity: 0.4; 
+            display: flex; align-items: center; justify-content: center; font-size: 0.6875rem; color: #666; text-align: center; padding: 0.3125rem; /* 80px, 120px, 11px, 5px */
         }
         .main-banner {
-            flex: 1; border: 2px solid #333; background-color: #fff; text-align: center; padding: 25px 20px;
+            flex: 1; border: 2px solid #333; background-color: #fff; text-align: center; padding: 1.5625rem 1.25rem; /* 25px 20px */
         }
-        .banner-title { font-size: 26px; margin-bottom: 10px; }
-        .banner-sub { background-color: #f7d6c8; padding: 8px; font-weight: bold; color: #b84116; }
+        .banner-title { font-size: 1.625rem; margin-bottom: 0.625rem; } /* 26px, 10px */
+        .banner-sub { background-color: #f7d6c8; padding: 0.5rem; font-weight: bold; color: #b84116; } /* 8px */
 
         /* 全体コンテナ */
         .page-section {
-            max-width: 1200px;
-            margin: 0 auto 50px auto;
-            padding: 0 20px;
+            max-width: 75rem; /* 1200px */
+            margin: 0 auto 3.125rem auto; /* 50px */
+            padding: 0 1.25rem; /* 20px */
         }
 
         /* 【ホーム用】2カラムレイアウト */
         .default-layout {
             display: flex; border: 1px solid #aaa; background-color: #fff;
         }
-        /* 【修正点3】スマホだと2カラムが横に並んで極端に細くなるため、画面が狭い時は縦並びに変更 */
         @media (max-width: 768px) {
             .default-layout {
                 flex-direction: column;
             }
         }
 
-        .column { flex: 1; min-height: 450px; display: flex; flex-direction: column; }
+        .column { flex: 1; min-height: 28.125rem; display: flex; flex-direction: column; } /* 450px */
         .column:first-child { border-right: 1px solid #aaa; }
-        
-        /* 【修正点4】縦並びになった際、元の右境界線を消して、下に境界線を引くように調整 */
         @media (max-width: 768px) {
             .column:first-child {
                 border-right: none;
@@ -122,46 +119,44 @@
         }
         
         .column-title {
-            background-color: #f0f0f0; padding: 12px; text-align: center;
-            font-size: 18px; font-weight: bold; letter-spacing: 0.3em;
-            border-bottom: 1px solid #aaa;
+            background-color: #f0f0f0; padding: 0.75rem; text-align: center;
+            font-size: 1.125rem; font-weight: bold; letter-spacing: 0.3em;
+            border-bottom: 1px solid #aaa; /* 18px */
         }
-        .list-container { padding: 20px; flex: 1; }
-        .scrollable-list { max-height: 450px; overflow-y: auto; }
+        .list-container { padding: 1.25rem; flex: 1; } /* 20px */
+        .scrollable-list { max-height: 28.125rem; overflow-y: auto; } /* 450px */
 
         /* 小説アイテム（ホーム共通） */
         .novel-item {
-            margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px dashed #eee;
+            margin-bottom: 0.9375rem; padding-bottom: 0.625rem; border-bottom: 1px dashed #eee; /* 15px, 10px */
         }
         .novel-title-link {
-            color: #0066cc; text-decoration: none; font-weight: bold; font-size: 18px; cursor: pointer;
+            color: #0066cc; text-decoration: none; font-weight: bold; font-size: 1.125rem; cursor: pointer; /* 18px */
         }
         .novel-title-link:hover { text-decoration: underline; }
-        .rank-badge { color: #ffaa00; font-weight: bold; margin-right: 5px; font-size: 18px; }
+        .rank-badge { color: #ffaa00; font-weight: bold; margin-right: 0.3125rem; font-size: 1.125rem; } /* 5px, 18px */
 
         /* 【画面1：検索結果】専用スタイル */
         .search-result-title-text {
-            text-align: center; font-size: 20px; color: #555; margin: 30px 0 20px 0;
+            text-align: center; font-size: 1.25rem; color: #555; margin: 1.875rem 0 1.25rem 0; /* 20px, 30px 0 20px 0 */
         }
         .search-result-box {
             border: 1px solid #ddd; background-color: #fff;
             border-radius: 6px;
             display: flex; align-items: center; justify-content: space-between;
-            padding: 20px 25px; width: 100%; max-width: 900px; margin: 0 auto 15px auto;
+            padding: 1.25rem 1.5625rem; width: 100%; max-width: 56.25rem; margin: 0 auto 0.9375rem auto; /* 20px 25px, 900px, 15px */
             box-shadow: 0 2px 4 rgba(0,0,0,0.02);
         }
-        .result-main { display: flex; align-items: baseline; gap: 40px; }
-        
-        /* 【修正点5】検索結果の文字やメタ情報がスマホで重ならないよう、縦並びに対応 */
+        .result-main { display: flex; align-items: baseline; gap: 2.5rem; } /* 40px */
         @media (max-width: 600px) {
             .search-result-box {
                 flex-direction: column;
                 align-items: flex-start;
-                gap: 15px;
+                gap: 0.9375rem;
             }
             .result-main {
                 flex-direction: column;
-                gap: 10px;
+                gap: 0.625rem;
             }
             .result-fav-status {
                 width: 100%;
@@ -169,14 +164,14 @@
             }
         }
 
-        .result-title { font-size: 22px; font-weight: bold; color: #0066cc; cursor: pointer; }
+        .result-title { font-size: 1.375rem; font-weight: bold; color: #0066cc; cursor: pointer; } /* 22px */
         .result-title:hover { text-decoration: underline; }
-        .result-meta { font-size: 14px; color: #666; line-height: 1.5; }
-        .result-fav-status { font-size: 14px; color: #333; text-align: right; font-weight: bold; }
+        .result-meta { font-size: 0.875rem; color: #666; line-height: 1.5; } /* 14px */
+        .result-fav-status { font-size: 0.875rem; color: #333; text-align: right; font-weight: bold; } /* 14px */
 
         /* 登録UI */
         .status-badge {
-            display: inline-block; padding: 6px 14px; font-size: 13px; border-radius: 4px;
+            display: inline-block; padding: 0.375rem 0.875rem; font-size: 0.8125rem; border-radius: 4px; /* 6px 14px, 13px */
             border: 1px solid #ccc; background-color: #fff; color: #666; cursor: pointer;
             user-select: none; transition: all 0.2s; text-align: center;
         }
@@ -189,16 +184,15 @@
         /* 【画面2：本文閲覧】最外枠レイアウト（章を完全に枠外に出すための調整） */
         .viewer-outer-layout {
             display: flex;
-            gap: 30px;
+            gap: 1.875rem; /* 30px */
             align-items: flex-start;
-            max-width: 1200px;
-            margin: 40px auto;
+            max-width: 75rem; /* 1200px */
+            margin: 2.5rem auto; /* 40px */
         }
-        /* 【修正点6】閲覧画面もスマホ時は「本文」→「章一覧」の順で縦並びにする */
         @media (max-width: 768px) {
             .viewer-outer-layout {
                 flex-direction: column;
-                gap: 20px;
+                gap: 1.25rem;
             }
         }
 
@@ -206,23 +200,22 @@
         .viewer-container {
             flex: 1;
             background-color: #fff;
-            padding: 40px;
+            padding: 2.5rem; /* 40px */
             border: 1px solid #ddd;
             border-radius: 4px;
             min-width: 0; /* 折り返し崩れ防止 */
         }
-        /* 【修正点7】スマホの画面幅に合わせて本文の余白を適切に調整 */
         @media (max-width: 600px) {
             .viewer-container {
-                padding: 20px;
+                padding: 1.25rem;
             }
             .viewer-header {
                 flex-direction: column;
-                gap: 15px;
+                gap: 0.9375rem;
             }
             .viewer-center-title {
                 padding: 0;
-                font-size: 26px;
+                font-size: 1.625rem;
                 text-align: left;
             }
             .viewer-right-meta {
@@ -232,42 +225,43 @@
 
         .viewer-header {
             display: flex; justify-content: space-between; align-items: flex-start;
-            border-bottom: 2px solid #ff8e8e; padding-bottom: 20px; margin-bottom: 30px;
+            border-bottom: 2px solid #ff8e8e; padding-bottom: 1.25rem; margin-bottom: 1.875rem; /* 20px, 30px */
         }
-        .viewer-left { display: flex; flex-direction: column; gap: 12px; }
+        .viewer-left { display: flex; flex-direction: column; gap: 0.75rem; } /* 12px */
         .viewer-back-btn {
-            padding: 6px 12px; font-size: 12px; background-color: #eee;
+            padding: 0.375rem 0.75rem; font-size: 0.75rem; background-color: #eee; /* 6px 12px, 12px */
             border: 1px solid #ccc; border-radius: 3px; cursor: pointer; width: fit-content;
         }
         .viewer-back-btn:hover { background-color: #e0e0e0; }
-        .viewer-center-title { font-size: 32px; font-weight: bold; text-align: center; flex: 1; padding: 0 20px; }
-        .viewer-right-meta { text-align: right; font-size: 14px; color: #444; line-height: 1.6; }
+        .viewer-center-title { font-size: 2rem; font-weight: bold; text-align: center; flex: 1; padding: 0 1.25rem; } /* 32px, 20px */
+        .viewer-right-meta { text-align: right; font-size: 0.875rem; color: #444; line-height: 1.6; } /* 14px */
         
         .viewer-chapter-title-display {
-            font-size: 24px; font-weight: bold; margin-bottom: 20px; color: #444;
-            border-left: 4px solid #ff8e8e; padding-left: 10px;
+            font-size: 1.5rem; font-weight: bold; margin-bottom: 1.25rem; color: #444; /* 24px, 20px */
+            border-left: 4px solid #ff8e8e; padding-left: 0.625rem; /* 10px */
         }
+        /* 【修正点3】本文のみ個別でサイズ指定されていたため、全体の拡大率に合わせるよう調整 */
         .viewer-body-text {
             font-family: 'Shippori Mincho', 'YuMincho', '游明朝', 'MS Mincho', Georgia, serif;
-            font-size: 22px; line-height: 2.5; letter-spacing: 0.06em;
+            font-size: 1.375rem; /* 22pxに相当（ここもルート基準に連動） */
+            line-height: 2.5; letter-spacing: 0.06em;
             white-space: pre-wrap; word-wrap: break-word; color: #111;
-            padding: 0 10px 40px 10px;
+            padding: 0 0.625rem 2.5rem 0.625rem; /* 0 10px 40px 10px */
         }
 
         /* 右側章一覧を本文の「完全枠外」へ（背景を完全に分けて浮かせ、スクロール追従） */
         .viewer-sidebar {
-            width: 280px;
+            width: 17.5rem; /* 280px */
             position: sticky;
-            top: 20px;
+            top: 1.25rem; /* 20px */
             border: 1px solid #e0e0e0;
             border-radius: 6px;
             background-color: #ffffff;
-            padding: 20px;
-            max-height: calc(100vh - 40px);
+            padding: 1.25rem; /* 20px */
+            max-height: calc(100vh - 2.5rem); /* 40px */
             overflow-y: auto;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* 枠外として際端たせる影調 */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         }
-        /* 【修正点8】スマホ縦並び時は横幅いっぱいに広げ、sticky（位置固定）を解除 */
         @media (max-width: 768px) {
             .viewer-sidebar {
                 width: 100%;
@@ -277,13 +271,13 @@
         }
 
         .sidebar-title {
-            font-size: 15px; font-weight: bold; color: #555; margin-bottom: 15px;
-            padding-bottom: 8px; border-bottom: 2px solid #ff8e8e; text-align: center;
+            font-size: 0.9375rem; font-weight: bold; color: #555; margin-bottom: 0.9375rem; /* 15px */
+            padding-bottom: 0.5rem; border-bottom: 2px solid #ff8e8e; text-align: center; /* 8px */
             letter-spacing: 0.1em;
         }
-        .chapter-nav-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+        .chapter-nav-list { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; } /* 8px */
         .chapter-nav-item {
-            font-size: 14px; color: #0066cc; cursor: pointer; padding: 8px 10px;
+            font-size: 0.875rem; color: #0066cc; cursor: pointer; padding: 0.5rem 0.625rem; /* 14px, 8px 10px */
             border-radius: 4px; transition: all 0.2s;
             white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
         }
@@ -304,13 +298,14 @@
             </div>
             <button id="search-btn">検索</button>
             
+            <!-- 選択肢を倍率（％）形式に変更し、直感的な認知をサポート -->
             <div class="font-size-selector">
-                <label for="font-size-select">文字サイズ：</label>
+                <label for="font-size-select">画面全体の大きさ：</label>
                 <select id="font-size-select" onchange="changeBodyFontSize(this.value)">
-                    <option value="18px">小</option>
-                    <option value="22px" selected>中（標準）</option>
-                    <option value="26px">大</option>
-                    <option value="30px">特大</option>
+                    <option value="13px">小（80%）</option>
+                    <option value="16px" selected>中（100% 標準）</option>
+                    <option value="19px">大（120%）</option>
+                    <option value="22px">特大（140%）</option>
                 </select>
             </div>
         </div>
@@ -384,13 +379,11 @@
 
     <script src="Shosetsu.js"></script>
     <script>
-        // 万が一のためのセーフティネット
         const backupData = [
             { id: 1, title: "絶望の翳し（代替データ）", author: "タロウ", date: "2026-07-07", chapters: [{ title: "第一章", content: "本文が入ります。" }] }
         ];
         const finalNovelData = (typeof novelData !== 'undefined') ? novelData : backupData;
 
-        // LocalStorageから最初にお気に入りを復元（データ永続化）
         let favoriteIds = [];
         try {
             const savedFavorites = localStorage.getItem('story_base_favorites');
@@ -436,20 +429,19 @@
             });
         });
 
-        // 文字サイズ変更用の関数
-        function changeBodyFontSize(size) {
-            const bodyText = document.getElementById('v-content');
-            if (bodyText) {
-                bodyText.style.fontSize = size;
+        /* 【修正点4】本文だけでなく、サイトの根本（html）のサイズを変更するロジックに変更
+           これにより、すべての要素のデザイン比率を保ったまま一括でスケールが変わるようになります */
+        function changeBodyFontSize(baseSize) {
+            const htmlRoot = document.getElementById('html-root');
+            if (htmlRoot) {
+                htmlRoot.style.fontSize = baseSize;
             }
         }
 
-        // 状態変更時のUI一斉更新とローカルストレージ保存の連動
         function updateAllLists() {
             renderHomeRecentList();
             renderRightFavoriteList();
             
-            // 状態が変化した瞬間に永続化処理を実行
             try {
                 localStorage.setItem('story_base_favorites', JSON.stringify(favoriteIds));
             } catch (e) {
@@ -464,7 +456,6 @@
             }
         }
 
-        // お気に入り状態のコアロジック
         function toggleFavorite(id) {
             const index = favoriteIds.indexOf(id);
             if (index === -1) {
@@ -475,7 +466,6 @@
             updateAllLists();
         }
 
-        // ホーム画面へ遷移
         function showDefaultPage() {
             currentScreen = 'home';
             document.getElementById('news-bar').style.display = 'block';
@@ -679,7 +669,7 @@
             document.getElementById('v-chapter-title').innerText = currentChapter.title;
             document.getElementById('v-content').innerText = currentChapter.content;
 
-            // 現在選択されているセレクトボックスの文字サイズを適用
+            // 【修正点5】本文表示時も、全体設定されているルートフォントサイズを連動
             const currentSize = document.getElementById('font-size-select').value;
             changeBodyFontSize(currentSize);
         }
@@ -691,7 +681,6 @@
             currentChapterIndex = chapterIndex;
             renderChaptersAndContent(novel);
 
-            // スムーズスクロールでビューアーの上部へ戻す
             const viewerContainer = document.querySelector('.viewer-container');
             viewerContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
