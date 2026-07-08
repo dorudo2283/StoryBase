@@ -28,6 +28,9 @@
         /* 検索窓（クリアボタン「×」付き） */
         .search-area { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
         .search-input-wrapper { position: relative; display: inline-block; }
+        
+        /* 【修正点2】iPhone(iOS)でinputの文字サイズが16px未満だと自動ズームされるため、
+           スマートフォンの場合のみ見た目のサイズ感を維持しつつ16pxに変更（フォームのズームを防止） */
         .search-input-wrapper input {
             padding: 6px 30px 6px 12px;
             width: 250px;
@@ -35,6 +38,13 @@
             border-radius: 4px;
             font-size: 14px;
         }
+        @media (max-width: 768px) {
+            .search-input-wrapper input {
+                font-size: 16px; /* ズーム防止用 */
+                padding: 4px 30px 4px 12px; /* 高さが変わりすぎないよう微調整 */
+            }
+        }
+
         .clear-btn {
             position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
             border: none; background: none; color: #999; font-size: 16px; cursor: pointer; display: none;
@@ -52,6 +62,12 @@
         }
         .font-size-selector select {
             padding: 2px 4px; border: 1px solid #ccc; border-radius: 3px; font-size: 13px; cursor: pointer; outline: none; background: #fff;
+        }
+        /* 【修正点2に関連】セレクトボックスもスマホでのズーム対象になるため対策 */
+        @media (max-width: 768px) {
+            .font-size-selector select {
+                font-size: 16px;
+            }
         }
 
         /* お知らせバー */
@@ -87,8 +103,23 @@
         .default-layout {
             display: flex; border: 1px solid #aaa; background-color: #fff;
         }
+        /* 【修正点3】スマホだと2カラムが横に並んで極端に細くなるため、画面が狭い時は縦並びに変更 */
+        @media (max-width: 768px) {
+            .default-layout {
+                flex-direction: column;
+            }
+        }
+
         .column { flex: 1; min-height: 450px; display: flex; flex-direction: column; }
         .column:first-child { border-right: 1px solid #aaa; }
+        
+        /* 【修正点4】縦並びになった際、元の右境界線を消して、下に境界線を引くように調整 */
+        @media (max-width: 768px) {
+            .column:first-child {
+                border-right: none;
+                border-bottom: 1px solid #aaa;
+            }
+        }
         
         .column-title {
             background-color: #f0f0f0; padding: 12px; text-align: center;
@@ -120,6 +151,24 @@
             box-shadow: 0 2px 4 rgba(0,0,0,0.02);
         }
         .result-main { display: flex; align-items: baseline; gap: 40px; }
+        
+        /* 【修正点5】検索結果の文字やメタ情報がスマホで重ならないよう、縦並びに対応 */
+        @media (max-width: 600px) {
+            .search-result-box {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            .result-main {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .result-fav-status {
+                width: 100%;
+                text-align: left;
+            }
+        }
+
         .result-title { font-size: 22px; font-weight: bold; color: #0066cc; cursor: pointer; }
         .result-title:hover { text-decoration: underline; }
         .result-meta { font-size: 14px; color: #666; line-height: 1.5; }
@@ -145,6 +194,13 @@
             max-width: 1200px;
             margin: 40px auto;
         }
+        /* 【修正点6】閲覧画面もスマホ時は「本文」→「章一覧」の順で縦並びにする */
+        @media (max-width: 768px) {
+            .viewer-outer-layout {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }
 
         /* 本文枠：白背景の閉じた独立空間を維持 */
         .viewer-container {
@@ -155,6 +211,25 @@
             border-radius: 4px;
             min-width: 0; /* 折り返し崩れ防止 */
         }
+        /* 【修正点7】スマホの画面幅に合わせて本文の余白を適切に調整 */
+        @media (max-width: 600px) {
+            .viewer-container {
+                padding: 20px;
+            }
+            .viewer-header {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .viewer-center-title {
+                padding: 0;
+                font-size: 26px;
+                text-align: left;
+            }
+            .viewer-right-meta {
+                text-align: left;
+            }
+        }
+
         .viewer-header {
             display: flex; justify-content: space-between; align-items: flex-start;
             border-bottom: 2px solid #ff8e8e; padding-bottom: 20px; margin-bottom: 30px;
@@ -190,8 +265,17 @@
             padding: 20px;
             max-height: calc(100vh - 40px);
             overflow-y: auto;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* 枠外として際立たせる影調 */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* 枠外として際端たせる影調 */
         }
+        /* 【修正点8】スマホ縦並び時は横幅いっぱいに広げ、sticky（位置固定）を解除 */
+        @media (max-width: 768px) {
+            .viewer-sidebar {
+                width: 100%;
+                position: static;
+                max-height: none;
+            }
+        }
+
         .sidebar-title {
             font-size: 15px; font-weight: bold; color: #555; margin-bottom: 15px;
             padding-bottom: 8px; border-bottom: 2px solid #ff8e8e; text-align: center;
@@ -220,7 +304,6 @@
             </div>
             <button id="search-btn">検索</button>
             
-            <!-- 検索ボタンの隣に文字サイズ変更UIを配置 -->
             <div class="font-size-selector">
                 <label for="font-size-select">文字サイズ：</label>
                 <select id="font-size-select" onchange="changeBodyFontSize(this.value)">
