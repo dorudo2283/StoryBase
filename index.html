@@ -13,7 +13,7 @@
             font-size: 1rem;
         }
 
-        /* 本文エリアのデフォルトフォントクラス */
+        /* 本文エリアのフォントクラス */
         .font-mincho {
             font-family: 'Shippori Mincho', 'YuMincho', '游明朝', 'MS Mincho', Georgia, serif !important;
         }
@@ -21,7 +21,7 @@
             font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', sans-serif !important;
         }
 
-        /* ヘッダー：最上部固定 */
+        /* ヘッダー */
         header {
             background-color: #ff8e8e;
             padding: 0.9375rem 1.25rem;
@@ -38,17 +38,36 @@
         .search-area { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; position: relative; }
         .search-input-wrapper { position: relative; display: inline-block; }
         
+        /* 【修正・自動ズーム対策】
+           スマホの「16px未満の入力欄をタップすると勝手にズームする」仕様を回避するため、
+           ベースのフォントサイズを「16px」に固定し、transformの縮小を使って元のデザインサイズ（1rem相当）に見せています。
+        */
         .search-input-wrapper input {
             padding: 0.375rem 1.875rem 0.375rem 0.75rem;
             width: 15.625rem;
             border: 1px solid #ccc;
             border-radius: 4px;
-            font-size: 1rem; /* 基準変更に伴いスマホズームが起きない13px(1rem)以上に自動連動 */
+            font-size: 16px !important; /* ブラウザの自動ズームを防ぐ最低ライン */
+        }
+
+        /* モバイル環境（画面幅768px以下）のみ、見た目が大きくなりすぎないよう調整 */
+        @media (max-width: 768px) {
+            .search-input-wrapper input {
+                font-size: 16px !important;
+                /* ルートの文字サイズ（13pxや11px）に合わせて、見た目だけを約80%に縮小して馴染ませる */
+                transform: scale(0.85);
+                transform-origin: left center;
+                width: 18.3rem; /* 縮小される分、横幅を補正して元の見た目を維持 */
+            }
+            .clear-btn {
+                right: 2rem !important; /* 入力欄の縮小に合わせて×ボタンの位置を微調整 */
+            }
         }
 
         .clear-btn {
             position: absolute; right: 0.5rem; top: 50%; transform: translateY(-50%);
             border: none; background: none; color: #999; font-size: 1rem; cursor: pointer; display: none;
+            z-index: 2;
         }
         .clear-btn:hover { color: #333; }
 
@@ -57,7 +76,7 @@
             border-radius: 4px; cursor: pointer; font-size: 1rem;
         }
 
-        /* ⚙ 歯車ボタンのデザイン */
+        /* ⚙ 歯車ボタン */
         .settings-toggle-btn {
             background: #fff; border: 1px solid #ccc; border-radius: 4px;
             width: 2.2rem; height: 2.2rem; display: flex; align-items: center; justify-content: center;
@@ -65,7 +84,7 @@
         }
         .settings-toggle-btn:hover { background: #f0f0f0; color: #111; }
 
-        /* ⚙ 設定ドロップダウンパネル */
+        /* ⚙ 設定ドロップダウンパネル（PC基準：右端を合わせる） */
         .settings-panel {
             display: none; position: absolute; top: 2.8rem; right: 0; 
             background: #ffffff; border: 1px solid #ccc; border-radius: 6px;
@@ -75,7 +94,7 @@
         .settings-panel.is-show { display: flex; }
         .setting-item { display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.9rem; }
         .setting-item label { font-weight: bold; color: #555; }
-        .setting-item select { padding: 0.375rem; border: 1px solid #ccc; border-radius: 4px; background: #fff; cursor: pointer; }
+        .setting-item select { padding: 0.375rem; border: 1px solid #ccc; border-radius: 4px; background: #fff; cursor: pointer; font-size: 16px; } /* セレクトボックスもズーム対象になるため16px化 */
 
         /* お知らせバー */
         .news-bar {
@@ -90,7 +109,6 @@
         }
         .arrow { font-size: 1.875rem; cursor: pointer; user-select: none; padding: 0.625rem; }
         
-        /* 【改善】横幅を固定pxからremにし、PCでの見栄えを維持 */
         .side-box { 
             width: 6.15rem; height: 9.23rem; border: 1px solid #ccc; background-color: #fff; opacity: 0.4; 
             display: flex; align-items: center; justify-content: center; font-size: 0.85rem; color: #666; text-align: center; padding: 0.3125rem;
@@ -101,10 +119,16 @@
         .banner-title { font-size: 1.625rem; margin-bottom: 0.625rem; }
         .banner-sub { background-color: #f7d6c8; padding: 0.5rem; font-weight: bold; color: #b84116; }
 
-        /* 【重要】スマホ表示の時、左右の細長い広告枠を消すレスポンス対応 */
+        /* スマホ表示時のレスポンシブ対応 */
         @media (max-width: 768px) {
             .side-box { display: none !important; }
-            .settings-panel { right: auto; left: -5rem; } /* スマホでの画面はみ出し防止 */
+            
+            /* 右側基準で固定し、スマホの狭い画面でも右端に綺麗に収める */
+            .settings-panel { 
+                right: 0 !important; 
+                left: auto !important; 
+                width: 16rem; 
+            }
         }
 
         /* 全体コンテナ */
@@ -186,7 +210,7 @@
         
         /* 本文表示枠 */
         .viewer-body-text {
-            font-size: 1.69rem; /* 13pxの基準に対して約22pxに相当する倍率 */
+            font-size: 1.69rem; 
             line-height: 2.5; letter-spacing: 0.06em;
             white-space: pre-wrap; word-wrap: break-word; color: #111;
             padding: 0 0.625rem 2.5rem 0.625rem;
@@ -229,7 +253,9 @@
                 <div class="setting-item">
                     <label for="font-size-select">画面全体の大きさ</label>
                     <select id="font-size-select" onchange="changeBodyFontSize(this.value)">
-                        <option value="13px" selected>標準（100%）</option> <option value="16px">大（120%）</option>
+                        <option value="11px">小（85%）</option>
+                        <option value="13px" selected>標準（100%）</option>
+                        <option value="16px">大（120%）</option>
                         <option value="19px">特大（145%）</option>
                         <option value="22px">超特大（170%）</option>
                     </select>
@@ -357,26 +383,22 @@
                 showDefaultPage();
             });
 
-            // ⚙ 設定パネル以外をクリックしたときにパネルを閉じる処理
             document.addEventListener('click', () => {
                 document.getElementById('settings-panel').classList.remove('is-show');
             });
         });
 
-        // ⚙ 設定パネルの開閉制御
         function toggleSettingsPanel(event) {
-            event.stopPropagation(); // ヘッダー等へのイベント伝播を防ぐ
+            event.stopPropagation();
             const panel = document.getElementById('settings-panel');
             panel.classList.toggle('is-show');
         }
 
-        // 文字サイズ（ルート要素）を変更するロジック
         function changeBodyFontSize(baseSize) {
             const htmlRoot = document.getElementById('html-root');
             if (htmlRoot) { htmlRoot.style.fontSize = baseSize; }
         }
 
-        // 【新機能】本文のフォントを明朝体・ゴシック体で切り替えるロジック
         function changeBodyFontFamily(fontClass) {
             const vContent = document.getElementById('v-content');
             if (vContent) {
@@ -594,7 +616,6 @@
             document.getElementById('v-chapter-title').innerText = currentChapter.title;
             document.getElementById('v-content').innerText = currentChapter.content;
 
-            // 画面サイズ・フォント設定の再連動
             const currentSize = document.getElementById('font-size-select').value;
             changeBodyFontSize(currentSize);
             const currentFont = document.getElementById('font-family-select').value;
