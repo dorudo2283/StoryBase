@@ -1,12 +1,11 @@
 <!DOCTYPE html>
-<html lang="ja" id="html-root" style="font-size: 16px;">
+<html lang="ja" id="html-root">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Story Base | オリジナル小説</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* --- 角丸を抑え、直線ベースの小説サイトらしいデザインへ --- */
         :root {
             --primary-color: #ff8e8e;
             --primary-dark: #cc7171;
@@ -15,11 +14,12 @@
             --text-color: #333333;
             --card-bg: #ffffff;
             --border-color: #cccccc;
-            --font-size-base: 1rem;
-            --radius: 4px; /* 丸みをシャープ（4px）に変更 */
+            --radius: 4px;
+            
+            /* 本文用のデフォルトサイズ（親のフォントサイズとは独立させて軽量化） */
+            --viewer-font-size: 1.15rem;
         }
 
-        /* 夜間モードの定義 */
         .theme-dark {
             --bg-color: #1a1a1a;
             --text-color: #e0e0e0;
@@ -33,12 +33,15 @@
             font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", sans-serif;
             background-color: var(--bg-color);
             color: var(--text-color);
-            font-size: var(--font-size-base);
+            font-size: 16px;
             line-height: 1.7;
-            transition: background-color 0.2s, color 0.2s;
         }
 
-        /* 本文フォント設定 */
+        /* アニメーションの対象を限定して描画を軽量化 */
+        body.theme-dark, body:not(.theme-dark) {
+            transition: background-color 0.15s, color 0.15s;
+        }
+
         .font-mincho {
             font-family: 'Shippori Mincho', 'YuMincho', '游明朝', 'MS Mincho', Georgia, serif !important;
         }
@@ -46,7 +49,6 @@
             font-family: -apple-system, BlinkMacSystemFont, sans-serif !important;
         }
 
-        /* ヘッダー：追従（sticky）を廃止 */
         header {
             background-color: var(--card-bg);
             border-bottom: 2px solid var(--primary-color);
@@ -56,17 +58,17 @@
             align-items: center;
             flex-wrap: wrap;
             gap: 1rem;
-            position: relative; /* スクロールで上に流れるように変更 */
+            position: relative;
             z-index: 1000;
         }
         .logo { font-size: 1.5rem; font-weight: bold; color: #0d2c54; cursor: pointer; user-select: none; }
         .logo span { color: #2a7b4c; }
         .theme-dark .logo { color: #fff; }
         
-        /* 検索・設定 */
         .search-area { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; position: relative; }
         .search-input-wrapper { position: relative; display: inline-block; }
         
+        /* スマホの強制ズームを防ぐため、16pxを絶対に下回らないよう指定 */
         .search-input-wrapper input {
             padding: 0.4rem 2rem 0.4rem 0.75rem;
             width: 16rem;
@@ -74,7 +76,7 @@
             background-color: var(--bg-color);
             color: var(--text-color);
             border-radius: var(--radius);
-            font-size: 16px !important;
+            font-size: 16px !important; /* iOSのズーム防止 */
         }
         .search-input-wrapper input:focus {
             outline: none;
@@ -83,11 +85,8 @@
 
         @media (max-width: 768px) {
             .search-input-wrapper input {
-                transform: scale(0.9);
-                transform-origin: left center;
-                width: 14rem;
+                width: 12rem; /* 横幅だけ縮小し、文字サイズは16pxを維持 */
             }
-            .clear-btn { right: 2rem !important; }
         }
 
         .clear-btn {
@@ -98,14 +97,14 @@
 
         .search-area button:not(.settings-toggle-btn) {
             padding: 0.4rem 1rem; background-color: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-color);
-            border-radius: var(--radius); cursor: pointer; font-size: 0.95rem; transition: all 0.2s;
+            border-radius: var(--radius); cursor: pointer; font-size: 0.95rem;
         }
         .search-area button:not(.settings-toggle-btn):hover { background-color: var(--bg-color); }
 
         .settings-toggle-btn {
             background: var(--card-bg); border: 1px solid var(--border-color); border-radius: var(--radius);
             width: 2.2rem; height: 2.2rem; display: flex; align-items: center; justify-content: center;
-            cursor: pointer; font-size: 1.1rem; color: var(--text-color); transition: all 0.2s;
+            cursor: pointer; font-size: 1.1rem; color: var(--text-color);
         }
         .settings-toggle-btn:hover { background: var(--bg-color); }
 
@@ -119,18 +118,18 @@
         .settings-panel.is-show { display: flex; }
         .setting-item { display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.9rem; }
         .setting-item label { font-weight: bold; color: var(--text-color); opacity: 0.8; }
+        
+        /* セレクトボックスもスマホでズームされないよう16pxに統一 */
         .setting-item select { 
             padding: 0.4rem; border: 1px solid var(--border-color); border-radius: var(--radius); 
-            background: var(--card-bg); color: var(--text-color); cursor: pointer; font-size: 16px; 
+            background: var(--card-bg); color: var(--text-color); cursor: pointer; font-size: 16px !important; 
         }
 
-        /* お知らせバー */
         .news-bar {
             background-color: var(--primary-light); color: #333; padding: 0.5rem; text-align: center;
             font-size: 0.9rem; border-bottom: 1px solid var(--border-color);
         }
 
-        /* カルーセル */
         .carousel-container {
             display: flex; align-items: center; justify-content: center;
             margin: 1.5rem auto; max-width: 62.5rem; gap: 1.25rem; padding: 0 1.25rem;
@@ -154,7 +153,6 @@
             .settings-panel { right: 0 !important; left: auto !important; width: 16rem; }
         }
 
-        /* レイアウト */
         .page-section { max-width: 75rem; margin: 0 auto 3rem auto; padding: 0 1rem; }
         .default-layout { display: flex; border: 1px solid var(--border-color); background-color: var(--card-bg); }
         @media (max-width: 768px) { .default-layout { flex-direction: column; } }
@@ -170,14 +168,12 @@
         .list-container { padding: 1.25rem; flex: 1; }
         .scrollable-list { max-height: 28rem; overflow-y: auto; }
 
-        /* 小説アイテム */
         .novel-item { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.9rem; padding-bottom: 0.6rem; border-bottom: 1px dashed var(--border-color); }
         .novel-title-link { color: #0066cc; text-decoration: none; font-weight: bold; font-size: 1.1rem; cursor: pointer; }
         .theme-dark .novel-title-link { color: #66b2ff; }
         .novel-title-link:hover { text-decoration: underline; }
         .rank-badge { color: #ffaa00; font-weight: bold; margin-right: 0.3rem; font-size: 1.1rem; }
 
-        /* 検索結果 */
         .search-result-title-text { text-align: center; font-size: 1.25rem; margin: 1.8rem 0 1.25rem 0; }
         .search-result-box {
             border: 1px solid var(--border-color); background-color: var(--card-bg);
@@ -196,18 +192,16 @@
         .result-title:hover { text-decoration: underline; }
         .result-meta { font-size: 0.875rem; opacity: 0.7; line-height: 1.5; }
 
-        /* バッジ・ボタン */
         .status-badge {
             display: inline-block; padding: 0.375rem 0.875rem; font-size: 0.8rem; border-radius: var(--radius);
             border: 1px solid var(--border-color); background-color: var(--card-bg); color: var(--text-color); cursor: pointer;
-            user-select: none; transition: all 0.2s; text-align: center;
+            user-select: none; text-align: center;
         }
         .status-badge:hover { background-color: var(--bg-color); }
         .status-badge.is-fav { background-color: #e6f4ea; color: #137333; border-color: #a3dab8; font-weight: bold; }
         .status-badge.is-fav:hover { background-color: #d2edd9; }
         .theme-dark .status-badge.is-fav { background-color: #1b3a24; color: #81c995; border-color: #244d32; }
 
-        /* 本文閲覧レイアウト */
         .viewer-outer-layout { display: flex; gap: 1.875rem; align-items: flex-start; max-width: 75rem; margin: 2.5rem auto; }
         @media (max-width: 768px) { .viewer-outer-layout { flex-direction: column; gap: 1.25rem; } }
 
@@ -228,26 +222,24 @@
         
         .viewer-chapter-title-display { font-size: 1.5rem; font-weight: bold; margin-bottom: 1.25rem; border-left: 4px solid var(--primary-color); padding-left: 0.625rem; }
         
+        /* 小説本文の文字サイズをCSS変数で動的に制御 */
         .viewer-body-text {
-            font-size: 1.69rem; 
+            font-size: var(--viewer-font-size); 
             line-height: 2.5; letter-spacing: 0.06em;
             white-space: pre-wrap; word-wrap: break-word;
             padding: 0 0.625rem 2.5rem 0.625rem;
         }
 
-        /* 次話ナビゲーション */
         .episode-nav {
             display: flex; justify-content: space-between; border-top: 1px solid var(--border-color); padding-top: 1.5rem; margin-top: 2rem; gap: 1rem;
         }
         .episode-nav-btn {
             flex: 1; padding: 0.75rem; background-color: var(--bg-color); border: 1px solid var(--border-color); color: var(--text-color);
-            border-radius: var(--radius); text-align: center; cursor: pointer; font-size: 0.9rem; font-weight: bold; transition: all 0.2s;
-            user-select: none;
+            border-radius: var(--radius); text-align: center; cursor: pointer; font-size: 0.9rem; font-weight: bold; user-select: none;
         }
         .episode-nav-btn:hover:not(.is-disabled) { background-color: var(--primary-light); color: #333; border-color: var(--primary-color); }
         .episode-nav-btn.is-disabled { opacity: 0.3; cursor: not-allowed; }
 
-        /* サイドバー */
         .viewer-sidebar {
             width: 17.5rem; position: sticky; top: 1.25rem; border: 1px solid var(--border-color); border-radius: var(--radius);
             background-color: var(--card-bg); padding: 1.25rem; max-height: calc(100vh - 2.5rem); overflow-y: auto;
@@ -257,7 +249,7 @@
         .sidebar-title { font-size: 0.9375rem; font-weight: bold; margin-bottom: 0.9375rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--primary-color); text-align: center; letter-spacing: 0.1em; }
         .chapter-nav-list { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
         .chapter-nav-item {
-            font-size: 0.875rem; color: #0066cc; cursor: pointer; padding: 0.5rem 0.625rem; border-radius: var(--radius); transition: all 0.2s;
+            font-size: 0.875rem; color: #0066cc; cursor: pointer; padding: 0.5rem 0.625rem; border-radius: var(--radius);
             white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
         }
         .theme-dark .chapter-nav-item { color: #66b2ff; }
@@ -289,13 +281,12 @@
                     </select>
                 </div>
                 <div class="setting-item">
-                    <label for="font-size-select">画面全体の大きさ</label>
+                    <label for="font-size-select">本文の文字サイズ</label>
                     <select id="font-size-select" onchange="changeBodyFontSize(this.value)">
-                        <option value="11px">小（85%）</option>
-                        <option value="13px" selected>標準（100%）</option>
-                        <option value="16px">大（120%）</option>
-                        <option value="19px">特大（145%）</option>
-                        <option value="22px">超特大（170%）</option>
+                        <option value="1rem">小</option>
+                        <option value="1.15rem" selected>標準</option>
+                        <option value="1.35rem">大</option>
+                        <option value="1.55rem">特大</option>
                     </select>
                 </div>
                 <div class="setting-item">
@@ -363,7 +354,6 @@
                     <div class="viewer-body-text font-mincho" id="v-content">本文がここに表示されます。</div>
                 </div>
 
-                <!-- 次話ナビゲーション -->
                 <div class="episode-nav">
                     <div class="episode-nav-btn" id="prev-episode-btn" onclick="moveEpisode(-1)">前の章</div>
                     <div class="episode-nav-btn" id="next-episode-btn" onclick="moveEpisode(1)">次の章</div>
@@ -443,29 +433,26 @@
 
         function toggleSettingsPanel(event) {
             event.stopPropagation();
-            const panel = document.getElementById('settings-panel');
-            panel.classList.toggle('is-show');
+            document.getElementById('settings-panel').classList.toggle('is-show');
         }
 
         function changeTheme(mode) {
-            const root = document.body;
             if (mode === 'dark') {
-                root.classList.add('theme-dark');
+                document.body.classList.add('theme-dark');
             } else {
-                root.classList.remove('theme-dark');
+                document.body.classList.remove('theme-dark');
             }
         }
 
-        function changeBodyFontSize(baseSize) {
-            const htmlRoot = document.getElementById('html-root');
-            if (htmlRoot) { htmlRoot.style.fontSize = baseSize; }
+        // 重い原因だったリフロー範囲を限定。CSS変数で本文の文字サイズだけを瞬時に切り替え
+        function changeBodyFontSize(size) {
+            document.documentElement.style.setProperty('--viewer-font-size', size);
         }
 
         function changeBodyFontFamily(fontClass) {
             const vContent = document.getElementById('v-content');
             if (vContent) {
-                vContent.classList.remove('font-mincho', 'font-gothic');
-                vContent.classList.add(fontClass);
+                vContent.className = `viewer-body-text ${fontClass}`;
             }
         }
 
@@ -658,7 +645,7 @@
 
             renderChaptersAndContent(novel);
             updateViewerFavBadge();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            window.scrollTo({ top: 0, behavior: 'auto' }); // スムーススクロールをやめて瞬時に移動
         }
 
         function renderChaptersAndContent(novel) {
@@ -671,6 +658,7 @@
                 return;
             }
 
+            // 余計な関数（changeBodyFontSizeなど）の呼び出しを削除し、純粋な描画処理に絞って高速化
             novel.chapters.forEach((chapter, index) => {
                 const isActive = index === currentChapterIndex ? 'is-active' : '';
                 sidebarContainer.insertAdjacentHTML('beforeend', `
@@ -684,16 +672,10 @@
             document.getElementById('v-chapter-title').innerText = currentChapter.title;
             document.getElementById('v-content').innerText = currentChapter.content;
 
-            // ボタンの有効・無効切り替え
             const prevBtn = document.getElementById('prev-episode-btn');
             const nextBtn = document.getElementById('next-episode-btn');
             prevBtn.classList.toggle('is-disabled', currentChapterIndex === 0);
             nextBtn.classList.toggle('is-disabled', currentChapterIndex === novel.chapters.length - 1);
-
-            const currentSize = document.getElementById('font-size-select').value;
-            changeBodyFontSize(currentSize);
-            const currentFont = document.getElementById('font-family-select').value;
-            changeBodyFontFamily(currentFont);
         }
 
         function switchChapter(chapterIndex) {
@@ -704,7 +686,7 @@
             renderChaptersAndContent(novel);
 
             const viewerContainer = document.querySelector('.viewer-container');
-            viewerContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            viewerContainer.scrollIntoView({ behavior: 'auto', block: 'start' }); // ここも即時移動に変えてもっさり感を排除
         }
 
         function moveEpisode(direction) {
